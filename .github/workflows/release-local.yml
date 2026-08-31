@@ -1,23 +1,31 @@
-name: Release
+name: Release (fork)
+
+# Fork release pipeline. Triggered ONLY by fork release tags `vX.Y.Z-local.N`
+# (e.g. v0.4.36-local.1):
+#   - leading `v` keeps `git describe --match 'v[0-9]*'` (apps/desktop/
+#     scripts/package.mjs and the Go CLI ldflags) deriving the right version
+#     with zero code changes;
+#   - the `-local.N` prerelease suffix keeps fork tags disjoint from upstream
+#     stable tags `vX.Y.Z`, which remain owned by multica-ai.
+# The upstream release.yml is intentionally absent from this fork: its
+# `v*.*.*` glob would match fork tags and double-run the Docker builds.
 
 on:
   push:
     tags:
-      # GitHub Actions uses glob patterns here, not regex. Match versioned
-      # tags broadly at the trigger layer, then enforce strict semver below.
-      - "v*.*.*"
-      - "!v*-dirty*"
+      - "v*-local.*"
 
 permissions:
   contents: write
   packages: write
 
+concurrency:
+  group: release-fork-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   verify:
     runs-on: ubuntu-latest
-    outputs:
-      tag_name: ${{ steps.release_meta.outputs.tag_name }}
-      is_stable: ${{ steps.release_meta.outputs.is_stable }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,37 +33,24 @@ jobs:
           fetch-depth: 0
 
       - name: Validate tag name
-        id: release_meta
         shell: bash
         run: |
           tag="${GITHUB_REF_NAME}"
           echo "Triggered by tag: $tag"
-          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
-            echo "::error::Release tags must look like vX.Y.Z or vX.Y.Z-suffix; got '$tag'."
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-local\.[0-9]+$ ]]; then
+            echo "::error::Fork release tags must look like vX.Y.Z-local.N; got '$tag'."
             exit 1
-          fi
-          if [[ "$tag" == *-dirty* ]]; then
-            echo "::error::Refusing to release from dirty tag '$tag'."
-            exit 1
-          fi
-          echo "tag_name=$tag" >> "$GITHUB_OUTPUT"
-          if [[ "$tag" == *-* ]]; then
-            echo "is_stable=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "is_stable=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          # Deliberately independent from the minimum patch in server/go.mod:
-          # releases follow the newest 1.26 patch available to setup-go.
+          # Same policy as the upstream release workflow: releases follow the
+          # newest 1.26 patch available to setup-go, independent of the
+          # minimum patch in server/go.mod.
           go-version: "1.26.x"
           check-latest: true
           cache-dependency-path: server/go.sum
-
-      - name: Record Go toolchain
-        run: go version
 
       - name: Verify Go test wrapper
         run: bash scripts/test-go.test.sh
@@ -64,56 +59,13 @@ jobs:
         run: bash scripts/test-go.sh --race
 
       - name: Scan Go vulnerabilities
-        # Fail closed unless an administrator scopes the documented emergency
-        # override to this exact tag. See .github/RELEASING.md.
-        if: ${{ vars.ALLOW_VULN_BYPASS_FOR_TAG != github.ref_name }}
         working-directory: server
         run: go tool govulncheck ./...
 
-      - name: Record emergency vulnerability-scan bypass
-        if: ${{ vars.ALLOW_VULN_BYPASS_FOR_TAG == github.ref_name }}
-        run: echo "::warning::govulncheck was explicitly skipped for ${GITHUB_REF_NAME}; see .github/RELEASING.md"
-
-  release:
-    needs: verify
-    # Only run on the canonical upstream repo. Forks don't have the
-    # HOMEBREW_TAP_GITHUB_TOKEN secret and should not be publishing to
-    # `multica-ai/homebrew-tap` anyway. Without this guard, every fork's
-    # tag push fails this job (401 against the upstream tap), which makes
-    # downstream CI go red without affecting the actual artifact pipeline.
-    if: github.repository_owner == 'multica-ai'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          # Deliberately independent from the minimum patch in server/go.mod:
-          # releases follow the newest 1.26 patch available to setup-go.
-          go-version: "1.26.x"
-          check-latest: true
-          cache-dependency-path: server/go.sum
-
-      - name: Record Go toolchain
-        run: go version
-
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v6
-        with:
-          version: "~> v2"
-          args: release --clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
-
-  # Multi-arch images are built natively per platform on dedicated runners
-  # (amd64 on ubuntu-latest, arm64 on ubuntu-24.04-arm) and merged into a
-  # manifest list. This avoids QEMU emulation, which was making the Next.js
-  # arm64 build run for 30+ minutes per release.
+  # Multi-arch images built natively per platform (amd64 on ubuntu-latest,
+  # arm64 on ubuntu-24.04-arm) and merged into a manifest list — same shape
+  # as the upstream release workflow. Images are pushed to the fork's own
+  # GHCR namespace via github.repository_owner.
   docker-backend-build:
     needs: verify
     strategy:
@@ -140,8 +92,8 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository_owner }}/multica-backend
           labels: |
-            org.opencontainers.image.title=Multica Backend
-            org.opencontainers.image.description=Multica self-hosted backend
+            org.opencontainers.image.title=Multica Backend (fork)
+            org.opencontainers.image.description=Multica self-hosted backend — SIE fork build
 
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -165,7 +117,7 @@ jobs:
           cache-from: type=gha,scope=release-backend-${{ env.PLATFORM_PAIR }}
           cache-to: type=gha,mode=max,scope=release-backend-${{ env.PLATFORM_PAIR }}
           build-args: |
-            VERSION=${{ needs.verify.outputs.tag_name }}
+            VERSION=${{ github.ref_name }}
             COMMIT=${{ github.sha }}
           outputs: type=image,name=ghcr.io/${{ github.repository_owner }}/multica-backend,push-by-digest=true,name-canonical=true,push=true
 
@@ -187,7 +139,7 @@ jobs:
     needs: [verify, docker-backend-build]
     runs-on: ubuntu-latest
     concurrency:
-      group: release-docker-backend-${{ github.ref }}
+      group: release-fork-docker-backend-${{ github.ref }}
       cancel-in-progress: true
     steps:
       - name: Download digests
@@ -200,6 +152,9 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # Every fork tag is a prerelease, so the upstream `is_stable` gate
+      # would never publish `latest`. In the fork, latest means "newest fork
+      # release" regardless of the -local suffix, so it is always tagged.
       - name: Compute backend image tags
         id: meta
         uses: docker/metadata-action@v5
@@ -208,8 +163,8 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=raw,value=latest,enable=${{ needs.verify.outputs.is_stable == 'true' }}
-            type=raw,value=${{ needs.verify.outputs.tag_name }}
+            type=raw,value=latest
+            type=raw,value=${{ github.ref_name }}
             type=sha,prefix=sha-
 
       - name: Login to GHCR
@@ -257,8 +212,8 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository_owner }}/multica-web
           labels: |
-            org.opencontainers.image.title=Multica Web
-            org.opencontainers.image.description=Multica self-hosted web frontend
+            org.opencontainers.image.title=Multica Web (fork)
+            org.opencontainers.image.description=Multica self-hosted web frontend — SIE fork build
 
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -283,7 +238,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=release-web-${{ env.PLATFORM_PAIR }}
           build-args: |
             REMOTE_API_URL=http://backend:8080
-            NEXT_PUBLIC_APP_VERSION=${{ needs.verify.outputs.tag_name }}
+            NEXT_PUBLIC_APP_VERSION=${{ github.ref_name }}
           outputs: type=image,name=ghcr.io/${{ github.repository_owner }}/multica-web,push-by-digest=true,name-canonical=true,push=true
 
       - name: Export digest
@@ -304,7 +259,7 @@ jobs:
     needs: [verify, docker-web-build]
     runs-on: ubuntu-latest
     concurrency:
-      group: release-docker-web-${{ github.ref }}
+      group: release-fork-docker-web-${{ github.ref }}
       cancel-in-progress: true
     steps:
       - name: Download digests
@@ -325,8 +280,8 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=raw,value=latest,enable=${{ needs.verify.outputs.is_stable == 'true' }}
-            type=raw,value=${{ needs.verify.outputs.tag_name }}
+            type=raw,value=latest
+            type=raw,value=${{ github.ref_name }}
             type=sha,prefix=sha-
 
       - name: Login to GHCR
@@ -348,67 +303,32 @@ jobs:
           docker buildx imagetools inspect \
             ghcr.io/${{ github.repository_owner }}/multica-web:${{ steps.meta.outputs.version }}
 
-  helm-chart:
-    needs: [verify, docker-backend-merge, docker-web-merge]
-    if: github.repository_owner == 'multica-ai'
-    runs-on: ubuntu-latest
-    concurrency:
-      group: release-helm-chart-${{ github.ref }}
-      cancel-in-progress: true
-    env:
-      CHART_DIR: deploy/helm/multica
-      OCI_REGISTRY: oci://ghcr.io/${{ github.repository_owner }}/charts
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Helm
-        uses: azure/setup-helm@v4
-
-      - name: Sync chart metadata with release tag
-        env:
-          TAG_NAME: ${{ needs.verify.outputs.tag_name }}
-        run: |
-          chart_version="${TAG_NAME#v}"
-          sed -i -E "s/^version:.*/version: ${chart_version}/" "$CHART_DIR/Chart.yaml"
-          sed -i -E "s/^appVersion:.*/appVersion: \"${TAG_NAME}\"/" "$CHART_DIR/Chart.yaml"
-          echo "CHART_VERSION=${chart_version}" >> "$GITHUB_ENV"
-
-      - name: Lint chart
-        run: helm lint "$CHART_DIR"
-
-      - name: Package chart
-        run: helm package "$CHART_DIR" --destination .chart-packages
-
-      - name: Login to GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io --username "${{ github.actor }}" --password-stdin
-
-      - name: Push chart to GHCR
-        run: helm push ".chart-packages/multica-${CHART_VERSION}.tgz" "$OCI_REGISTRY"
-
-      - name: Verify published chart
-        run: helm show chart "$OCI_REGISTRY/multica" --version "$CHART_VERSION"
-
-  # Build the Desktop installers for Linux and Windows and upload them to
-  # the GitHub Release that the `release` job above just published. macOS
-  # Desktop continues to ship via the manual `release-desktop` skill so it
-  # can be signed + notarized with Apple Developer credentials that are
-  # not (yet) wired into CI.
+  # Desktop installers for Windows and Linux, published straight to this
+  # fork's GitHub Release by electron-builder (--publish always reads the
+  # publish.owner from apps/desktop/electron-builder.yml, which points at
+  # this fork; the version comes from `git describe`, i.e. the pushed tag).
+  # macOS continues to need manual signing/notarization and is not built
+  # here. First fork release ships x64 only; add arm64 matrix entries once
+  # the pipeline is proven.
   desktop:
-    needs: release
+    needs: verify
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
             target: linux
+            arches: "--x64"
           - os: windows-latest
             target: win
+            arches: "--x64"
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          # package.mjs derives the desktop version from `git describe`,
+          # which needs full history and tags.
           fetch-depth: 0
 
       - name: Install rpmbuild (Linux)
@@ -418,14 +338,9 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          # Deliberately independent from the minimum patch in server/go.mod:
-          # releases follow the newest 1.26 patch available to setup-go.
           go-version: "1.26.x"
           check-latest: true
           cache-dependency-path: server/go.sum
-
-      - name: Record Go toolchain
-        run: go version
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -439,15 +354,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Package Desktop installers (${{ matrix.target }})
+      - name: Package Desktop installer (${{ matrix.target }})
         working-directory: apps/desktop
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # electron-builder's GitHub publisher reads this:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Disable code signing on Linux/Windows for now — the public
-          # release is unsigned for these platforms, the CLI carries the
-          # trust boundary. Set CSC_LINK in repo secrets to enable
-          # Windows signing later.
+          # Unsigned for now — same policy as the upstream Linux/Windows
+          # release. Set CSC_LINK in repo secrets to enable signing later.
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
-        run: node scripts/package.mjs --${{ matrix.target }} --x64 --arm64 --publish always
+        run: node scripts/package.mjs --${{ matrix.target }} ${{ matrix.arches }} --publish always

@@ -123,7 +123,9 @@ win:
   artifactName: multica-desktop-${version}-windows-${arch}.${ext}
 publish:
   provider: github
-  owner: multica-ai
+  # Fork publishes to its own GitHub Releases, and electron-updater on
+  # installed fork clients queries this same owner for auto-updates.
+  owner: SIE-Operations-and-Maintenance-Team
   repo: multica
   # Align with our CLI release flow which pre-creates a *published* GitHub
   # Release via `gh release create`. The electron-builder default of
