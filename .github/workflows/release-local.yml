@@ -65,7 +65,7 @@ jobs:
   # Multi-arch images built natively per platform (amd64 on ubuntu-latest,
   # arm64 on ubuntu-24.04-arm) and merged into a manifest list — same shape
   # as the upstream release workflow. Images are pushed to the fork's own
-  # GHCR namespace via github.repository_owner.
+  # GHCR namespace via the lowercased IMAGE_OWNER (repository_owner is not).
   docker-backend-build:
     needs: verify
     strategy:
@@ -82,6 +82,8 @@ jobs:
         run: |
           platform=${{ matrix.platform }}
           echo "PLATFORM_PAIR=${platform//\//-}" >> "$GITHUB_ENV"
+          # GHCR refs must be lowercase; repository_owner here is not.
+          echo "IMAGE_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -90,7 +92,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/multica-backend
+          images: ghcr.io/${{ env.IMAGE_OWNER }}/multica-backend
           labels: |
             org.opencontainers.image.title=Multica Backend (fork)
             org.opencontainers.image.description=Multica self-hosted backend — SIE fork build
@@ -119,7 +121,7 @@ jobs:
           build-args: |
             VERSION=${{ github.ref_name }}
             COMMIT=${{ github.sha }}
-          outputs: type=image,name=ghcr.io/${{ github.repository_owner }}/multica-backend,push-by-digest=true,name-canonical=true,push=true
+          outputs: type=image,name=ghcr.io/${{ env.IMAGE_OWNER }}/multica-backend,push-by-digest=true,name-canonical=true,push=true
 
       - name: Export digest
         run: |
@@ -142,6 +144,9 @@ jobs:
       group: release-fork-docker-backend-${{ github.ref }}
       cancel-in-progress: true
     steps:
+      - name: Compute lowercase image owner
+        run: echo "IMAGE_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
+
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
@@ -159,7 +164,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/multica-backend
+          images: ghcr.io/${{ env.IMAGE_OWNER }}/multica-backend
           flavor: |
             latest=false
           tags: |
@@ -179,12 +184,12 @@ jobs:
         run: |
           docker buildx imagetools create \
             $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf 'ghcr.io/${{ github.repository_owner }}/multica-backend@sha256:%s ' *)
+            $(printf 'ghcr.io/${{ env.IMAGE_OWNER }}/multica-backend@sha256:%s ' *)
 
       - name: Inspect image
         run: |
           docker buildx imagetools inspect \
-            ghcr.io/${{ github.repository_owner }}/multica-backend:${{ steps.meta.outputs.version }}
+            ghcr.io/${{ env.IMAGE_OWNER }}/multica-backend:${{ steps.meta.outputs.version }}
 
   docker-web-build:
     needs: verify
@@ -202,6 +207,8 @@ jobs:
         run: |
           platform=${{ matrix.platform }}
           echo "PLATFORM_PAIR=${platform//\//-}" >> "$GITHUB_ENV"
+          # GHCR refs must be lowercase; repository_owner here is not.
+          echo "IMAGE_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -210,7 +217,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/multica-web
+          images: ghcr.io/${{ env.IMAGE_OWNER }}/multica-web
           labels: |
             org.opencontainers.image.title=Multica Web (fork)
             org.opencontainers.image.description=Multica self-hosted web frontend — SIE fork build
@@ -239,7 +246,7 @@ jobs:
           build-args: |
             REMOTE_API_URL=http://backend:8080
             NEXT_PUBLIC_APP_VERSION=${{ github.ref_name }}
-          outputs: type=image,name=ghcr.io/${{ github.repository_owner }}/multica-web,push-by-digest=true,name-canonical=true,push=true
+          outputs: type=image,name=ghcr.io/${{ env.IMAGE_OWNER }}/multica-web,push-by-digest=true,name-canonical=true,push=true
 
       - name: Export digest
         run: |
@@ -262,6 +269,9 @@ jobs:
       group: release-fork-docker-web-${{ github.ref }}
       cancel-in-progress: true
     steps:
+      - name: Compute lowercase image owner
+        run: echo "IMAGE_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
+
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
@@ -276,7 +286,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/multica-web
+          images: ghcr.io/${{ env.IMAGE_OWNER }}/multica-web
           flavor: |
             latest=false
           tags: |
@@ -296,12 +306,12 @@ jobs:
         run: |
           docker buildx imagetools create \
             $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf 'ghcr.io/${{ github.repository_owner }}/multica-web@sha256:%s ' *)
+            $(printf 'ghcr.io/${{ env.IMAGE_OWNER }}/multica-web@sha256:%s ' *)
 
       - name: Inspect image
         run: |
           docker buildx imagetools inspect \
-            ghcr.io/${{ github.repository_owner }}/multica-web:${{ steps.meta.outputs.version }}
+            ghcr.io/${{ env.IMAGE_OWNER }}/multica-web:${{ steps.meta.outputs.version }}
 
   # Desktop installers for Windows and Linux, published straight to this
   # fork's GitHub Release by electron-builder (--publish always reads the
