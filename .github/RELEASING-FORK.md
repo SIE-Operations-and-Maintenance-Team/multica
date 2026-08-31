@@ -36,6 +36,10 @@ git push origin v0.4.36-local.1
 | Desktop 安装包（win + linux，x64） | 上传到本 fork 的 GitHub Release，electron-builder 生成 `latest.yml` 供自动更新 |
 
 - fork 镜像恒推 `latest`（fork 语境里 latest = 最新 fork 发版，不区分 prerelease）。
+- **GHCR 可见性**：首次推送后包默认为 private（`org Settings → Packages` 里可确认）。
+  部署机匿名拉取需把 `multica-backend` / `multica-web` 两个包改为 public
+  （Package 页 → Package settings → Danger Zone → Change visibility；开源代码构建产物，无泄露风险），
+  否则部署机要先 `docker login ghcr.io`（PAT 需 `read:packages`）。
 - macOS 桌面端需要 Apple 签名/公证，与上游一样不进 CI。
 - Helm chart 与独立 CLI（GoReleaser + Homebrew）暂不发：CLI 已随 Desktop 包内嵌
   （`bundle-cli.mjs`），需要独立分发时再评估（GoReleaser 的 brew 段依赖上游 token，fork 不可直接复用）。
