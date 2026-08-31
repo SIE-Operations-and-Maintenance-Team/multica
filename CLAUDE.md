@@ -252,6 +252,7 @@ Do not claim verification passed unless you ran it. If you skip checks because t
 - Commits should be atomic and use conventional prefixes: `feat(scope)`, `fix(scope)`, `refactor(scope)`, `docs`, `test(scope)`, `chore(scope)`.
 - A production deployment requires a CLI release tag on `main`: create `v0.x.x`, push it, and let `release.yml` publish binaries and the Homebrew tap.
 - Bump patch by default unless the user specifies a version.
+- **Fork releases (this repo)**: never use the upstream flow above. Fork releases are tag-driven `v<upstream>-local.<N>` handled by `release-local.yml` — the authoritative runbook is `.github/RELEASING-FORK.md`.
 
 ## Domain Reminders
 
