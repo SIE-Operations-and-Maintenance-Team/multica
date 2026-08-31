@@ -374,3 +374,75 @@ jobs:
           # release. Set CSC_LINK in repo secrets to enable signing later.
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
         run: node scripts/package.mjs --${{ matrix.target }} ${{ matrix.arches }} --publish always
+
+  # Android APK for the mobile client, published to the same GitHub Release
+  # as the desktop installers. Debug-signed for now (no keystore secrets) —
+  # installable for testing; wire a release keystore through repo secrets
+  # before distributing outside the team. The root .npmrc (node-linker=
+  # hoisted) is load-bearing here: pnpm's default symlink layout deadlocks
+  # CMake/ninja during the native build ("manifest still dirty"), which is
+  # exactly what the local Windows build proved out.
+  mobile:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Android native project
+        working-directory: apps/mobile
+        env:
+          APP_ENV: production
+        run: npx expo prebuild -p android --no-install
+
+      # Missing SDK components (NDK 27.1, build-tools 36.0.0) are auto-
+      # installed by AGP from the runner's pre-accepted licenses.
+      - name: Build release APK
+        working-directory: apps/mobile/android
+        env:
+          # Optional repo variable to override the API URL baked into the
+          # APK (e.g. http://192.168.184.61:8080 for the self-hosted
+          # backend). Unset = committed .env.production value (official
+          # cloud). Env vars beat .env files in Expo, hence the guard.
+          EXPO_PUBLIC_API_URL_OVERRIDE: ${{ vars.MULTICA_MOBILE_API_URL }}
+        run: |
+          if [ -n "$EXPO_PUBLIC_API_URL_OVERRIDE" ]; then
+            export EXPO_PUBLIC_API_URL="$EXPO_PUBLIC_API_URL_OVERRIDE"
+          fi
+          ./gradlew assembleRelease \
+            -x lintVitalAnalyzeRelease -x lintVitalReportRelease -x lintVitalRelease \
+            --console=plain
+
+      - name: Rename APK
+        run: |
+          mkdir -p dist
+          cp apps/mobile/android/app/build/outputs/apk/release/app-release.apk \
+            "multica-mobile-${GITHUB_REF_NAME}.apk"
+
+      # Appends to the release the desktop jobs create (and creates it if
+      # this job finishes first). Prerelease matches every -local.N tag.
+      - name: Upload APK to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: multica-mobile-*.apk
+          prerelease: true
+          fail_on_unmatched_files: true

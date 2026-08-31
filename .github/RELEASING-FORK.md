@@ -91,6 +91,7 @@ migrations 新增（自托管升级会自动执行）和 protocol/WS 消息变�
 | 2 | docker-*-build ×4 | backend/web 各 amd64+arm64 原生构建推 GHCR（by digest） | 与 desktop 并行 |
 | 3 | docker-*-merge ×2 | 合并 manifest list，打 `latest` / 版本 tag / sha tag | 秒级 |
 | 4 | desktop ×2 | Windows x64 + Linux x64，`package.mjs --publish always` 直传 GitHub Release | 与 docker 并行，最慢约 20 分钟 |
+| 5 | mobile | Expo prebuild → Gradle `assembleRelease` → `multica-mobile-<tag>.apk` 上传同一 Release | 与 desktop 并行，约 15-25 分钟（NDK/C++ 编译慢） |
 
 镜像名必须全小写：workflow 里用 `IMAGE_OWNER=${GITHUB_REPOSITORY_OWNER,,}` 转小写
 （org 名 `SIE-Operations-and-Maintenance-Team` 含大写，这是首跑踩过的坑，已固化在 workflow 里）。
@@ -103,6 +104,7 @@ migrations 新增（自托管升级会自动执行）和 protocol/WS 消息变�
 
 - `multica-desktop-<版本>-windows-x64.exe`（+ blockmap，自动更新用）
 - `multica-desktop-<版本>-linux-*`（deb / rpm / AppImage）
+- `multica-mobile-<tag>.apk`（Android 客户端，**debug 签名**——能装能测，对外分发前需接正式 keystore；API 地址默认官方云，设 repo variable `MULTICA_MOBILE_API_URL` 可在构建时改指自部署后端）
 - `latest.yml` / `latest-linux.yml`（electron-updater 元数据）
 
 **GHCR 镜像**（fork 自己的命名空间，恒双架构）：
@@ -179,10 +181,13 @@ git push origin v0.4.37-local.1
 
 | # | 文件 | 改动 | 说明 |
 |---|---|---|---|
-| 1 | `.github/workflows/release-local.yml` | 新增 | fork 发版 workflow，tag `v*-local.*` 触发 |
+| 1 | `.github/workflows/release-local.yml` | 新增 | fork 发版 workflow，tag `v*-local.*` 触发；含 mobile APK 构建 job |
 | 2 | `.github/workflows/release.yml` | 删除 | 上游 `v*.*.*` glob 会匹配 fork tag 造成双跑；上游 merge 若改它，保持删除 |
 | 3 | `apps/desktop/electron-builder.yml` | 修改 | publish.owner → 本 fork（上传 Release + 客户端自动更新都靠它） |
-| 4 | `.github/RELEASING-FORK.md` | 新增 | 本文档 |
+| 4 | `.npmrc` | 修改 | `node-linker=hoisted`——pnpm 默认 symlink 布局会让 Windows 上的 Android 原生构建 CMake/ninja 死循环；上游 merge 改它要保持 hoisted |
+| 5 | `apps/desktop/package.json` | 修改 | electron 版本固定（当前 39.8.7）——hoisted 布局下 electron 被提升到根 node_modules，`^` 区间会让 electron-builder postinstall 找不到版本而失败 |
+| 6 | `apps/mobile/app.config.ts` | 修改 | 新增 `android` 段（package name 三变体 + icon），与 iOS 变体逻辑对齐 |
+| 7 | `.github/RELEASING-FORK.md` | 新增 | 本文档 |
 
 `ci.yml` / `desktop-smoke.yml` / `mobile-verify.yml` 保留原样（fork 二开仍用上游测试门禁）。
 

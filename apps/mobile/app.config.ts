@@ -60,6 +60,17 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           ? "ai.multica.mobile.staging"
           : (process.env.EXPO_BUNDLE_IDENTIFIER_DEV ?? "ai.multica.mobile.dev"),
     },
+    android: {
+      // Mirrors the iOS per-variant bundle id logic so Dev / Staging /
+      // Production Android variants can coexist on one device. The same
+      // EXPO_BUNDLE_IDENTIFIER_* overrides apply.
+      package: isProd
+        ? (process.env.EXPO_BUNDLE_IDENTIFIER_PROD ?? "ai.multica.mobile")
+        : isStaging
+          ? "ai.multica.mobile.staging"
+          : (process.env.EXPO_BUNDLE_IDENTIFIER_DEV ?? "ai.multica.mobile.dev"),
+      icon: "./assets/icon.png",
+    },
     plugins: [
       "expo-router",
       "expo-secure-store",
