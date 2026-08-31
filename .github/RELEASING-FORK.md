@@ -184,10 +184,24 @@ git push origin v0.4.37-local.1
 | 1 | `.github/workflows/release-local.yml` | 新增 | fork 发版 workflow，tag `v*-local.*` 触发；含 mobile APK 构建 job |
 | 2 | `.github/workflows/release.yml` | 删除 | 上游 `v*.*.*` glob 会匹配 fork tag 造成双跑；上游 merge 若改它，保持删除 |
 | 3 | `apps/desktop/electron-builder.yml` | 修改 | publish.owner → 本 fork（上传 Release + 客户端自动更新都靠它） |
-| 4 | `.npmrc` | 修改 | `node-linker=hoisted`——pnpm 默认 symlink 布局会让 Windows 上的 Android 原生构建 CMake/ninja 死循环；上游 merge 改它要保持 hoisted |
-| 5 | `apps/desktop/package.json` | 修改 | electron 版本固定（当前 39.8.7）——hoisted 布局下 electron 被提升到根 node_modules，`^` 区间会让 electron-builder postinstall 找不到版本而失败 |
+| 4 | `.npmrc` | 修改 | 守卫注释：**禁止全局** `node-linker=hoisted`（Linux 上破坏 web 构建的 zod 类型推导、desktop 打包内存暴涨）；Android 原生构建按需临时 hoisted |
+| 5 | `apps/desktop/package.json` | 修改 | electron 版本固定（当前 39.8.7）——hoisted 布局下 electron 被提升到根 node_modules，`^` 区间会让 electron-builder postinstall 找不到版本而失败；symlink 布局下固定亦无害 |
 | 6 | `apps/mobile/app.config.ts` | 修改 | 新增 `android` 段（package name 三变体 + icon），与 iOS 变体逻辑对齐 |
 | 7 | `.github/RELEASING-FORK.md` | 新增 | 本文档 |
+
+**本地打 Android APK**（CI 是权威渠道，本地仅调试用）：
+
+```bash
+pnpm install --config.node-linker=hoisted    # 一次性重排 node_modules（打完可再装回默认）
+cd apps/mobile
+APP_ENV=production npx expo prebuild -p android --no-install
+cd android && JAVA_HOME=<JDK17> ./gradlew assembleRelease \
+  -x lintVitalAnalyzeRelease -x lintVitalReportRelease -x lintVitalRelease
+# 产物: apps/mobile/android/app/build/outputs/apk/release/app-release.apk
+```
+
+symlink 布局直接构建会死循环（CMake/ninja "manifest still dirty"）；lintVital 三连排除是绕开
+react-native-keyboard-controller 的 lint Metaspace OOM，不影响产物。
 
 `ci.yml` / `desktop-smoke.yml` / `mobile-verify.yml` 保留原样（fork 二开仍用上游测试门禁）。
 
