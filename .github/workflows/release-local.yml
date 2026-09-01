@@ -442,10 +442,11 @@ jobs:
             "multica-mobile-${GITHUB_REF_NAME}.apk"
 
       # Appends to the release the desktop jobs create (and creates it if
-      # this job finishes first). Prerelease matches every -local.N tag.
+      # this job finishes first). No prerelease flag anywhere in this
+      # pipeline: fork releases are full releases and must win "Latest"
+      # even though the tag carries a -local.N suffix.
       - name: Upload APK to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: multica-mobile-*.apk
-          prerelease: true
           fail_on_unmatched_files: true

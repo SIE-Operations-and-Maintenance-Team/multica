@@ -133,4 +133,8 @@ publish:
   # uploads of the DMG/ZIP/blockmaps/latest-mac.yml to be silently skipped,
   # which breaks electron-updater auto-update on installed clients.
   releaseType: release
+  # Fork tags carry a -local.N prerelease suffix, which electron-builder
+  # would auto-detect and mark the release as a GitHub prerelease — hiding
+  # it from "Latest". Fork releases are full releases; keep this false.
+  prerelease: false
 npmRebuild: false

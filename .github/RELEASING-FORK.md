@@ -38,6 +38,8 @@ Fork 版本 tag = **`v<上游基数>-local.<N>`**。
   （`apps/desktop/scripts/package.mjs`），不带 `v` 的 tag 会让版本退化成 `0.4.36-local.1` 变
   `0.0.0-g<hash>`，自动更新直接失效。
 - **必须带 `-local.N` 后缀**：合法 semver prerelease，与上游 stable tag（`v0.4.37`）永不重号。
+  注意：这只影响 tag/semver——GitHub Release 本身标为**正式版（非 prerelease）**，
+  "Latest" 始终指向最新 fork 发版（workflow 与 electron-builder 均显式关闭 prerelease 标记）。
 - **不需要 bump `package.json`**：根 package.json 的 version 只是占位，发版版本完全由 tag 驱动。
 
 ## 3. 日常发版（二开迭代，最常用）
