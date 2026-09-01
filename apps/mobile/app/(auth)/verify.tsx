@@ -124,9 +124,9 @@ export default function Verify() {
                 }
               >
                 {resending
-                  ? "Sending..."
+                  ? "发送中..."
                   : cooldown > 0
-                    ? `Resend code in ${cooldown}s`
+                    ? `${cooldown} 秒后可重新发送`
                     : "重新发送验证码"}
               </Text>
             </Pressable>

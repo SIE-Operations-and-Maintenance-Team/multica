@@ -108,7 +108,7 @@ export function ProjectPickerBody({ value, query, onChange }: Props) {
           <Text className="text-sm text-muted-foreground text-center">
             {query
               ? "无匹配结果。"
-              : "No projects in this workspace yet.\nCreate them on web."}
+              : "该工作区还没有项目。\n请在网页端创建。"}
           </Text>
         </View>
       }

@@ -155,7 +155,7 @@ function MentionChipView({
         onPress={() => onRemove(mention.type, mention.id)}
         hitSlop={8}
         accessibilityRole="button"
-        accessibilityLabel={`Remove mention ${mention.name}`}
+        accessibilityLabel={`移除提及 ${mention.name}`}
         className="h-4 w-4 items-center justify-center"
       >
         <Ionicons name="close" size={12} color={theme.mutedForeground} />
@@ -220,8 +220,8 @@ function AttachmentChipView({ item, onRemove, onRetry }: AttachmentChipProps) {
       accessibilityRole={item.status === "failed" ? "button" : "image"}
       accessibilityLabel={
         item.status === "failed"
-          ? `Retry upload of ${item.filename}`
-          : `Open ${item.filename}`
+          ? `重试上传 ${item.filename}`
+          : `打开 ${item.filename}`
       }
       className="flex-row items-center gap-1 h-7 px-2 rounded-full bg-secondary active:opacity-80"
     >

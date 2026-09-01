@@ -120,24 +120,24 @@ export function InboxDetailLabel({
             (details.new_assignee_type ?? "member") as "member" | "agent",
             details.new_assignee_id,
           );
-          return `Assigned to ${name}`;
+          return `指派给 ${name}`;
         }
         return TYPE_LABEL[item.type];
       case "unassigned":
         return "移除了负责人";
       case "due_date_changed":
         return details.to
-          ? `Set due date to ${shortDate(details.to)}`
+          ? `截止日期设为 ${shortDate(details.to)}`
           : "移除了截止日期";
       case "new_comment":
         return singleLine(item.body) || TYPE_LABEL[item.type];
       case "reaction_added":
         return details.emoji
-          ? `Reacted with ${details.emoji}`
+          ? `回应了 ${details.emoji}`
           : TYPE_LABEL[item.type];
       case "quick_create_done":
         return details.identifier
-          ? `Created with agent: ${details.identifier}`
+          ? `由智能体创建：${details.identifier}`
           : TYPE_LABEL[item.type];
       case "quick_create_failed": {
         const detail = singleLine(details.error) || singleLine(item.body);

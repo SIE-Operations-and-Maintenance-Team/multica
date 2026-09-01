@@ -158,8 +158,8 @@ export function MessageComposer({
   onSubmit,
   mentionPickerPath,
   uploadContext,
-  placeholder = "Type a message…",
-  pillLabel = "Type a message…",
+  placeholder = "输入消息…",
+  pillLabel = "输入消息…",
   pillIcon = "chatbubble-ellipses-outline",
   value: controlledValue,
   onChangeText: controlledOnChange,
@@ -347,7 +347,7 @@ export function MessageComposer({
     const picked = picker.assets[0];
     if (!picked) return;
     if (picked.fileSize != null && picked.fileSize > MAX_FILE_SIZE) {
-      Alert.alert("文件过大", "Files must be smaller than 100 MB.");
+      Alert.alert("文件过大", "文件需小于 100 MB。");
       return;
     }
     const filename = picked.fileName ?? `image-${Date.now()}.jpg`;
@@ -380,7 +380,7 @@ export function MessageComposer({
     const picked = picker.assets[0];
     if (!picked) return;
     if (picked.size != null && picked.size > MAX_FILE_SIZE) {
-      Alert.alert("文件过大", "Files must be smaller than 100 MB.");
+      Alert.alert("文件过大", "文件需小于 100 MB。");
       return;
     }
     const mimeType = picked.mimeType ?? "application/octet-stream";

@@ -81,7 +81,7 @@ export function useCommentLongPress(
     };
 
     push("回复", { kind: "reply" });
-    push("React…", { kind: "react" });
+    push("表情…", { kind: "react" });
     if (hasContent) {
       push("复制", { kind: "copy" });
       push("选择文本", { kind: "select" });
@@ -212,7 +212,7 @@ function presentReactSheet(args: {
 }) {
   const { entry, reactions, userId, wsSlug, issueId, toggle } = args;
   const emojis = QUICK_EMOJIS.slice(0, QUICK_ROW_SIZE);
-  const options = [...emojis, "More reactions…", "取消"];
+  const options = [...emojis, "更多表情…", "取消"];
   const cancelButtonIndex = options.length - 1;
 
   showActionSheet({

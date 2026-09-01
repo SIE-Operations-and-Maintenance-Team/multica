@@ -8,16 +8,16 @@ export function mapAuthError(err: unknown, fallback: string): string {
   if (!(err instanceof Error)) return fallback;
   const msg = err.message.toLowerCase();
   if (/invalid|incorrect|wrong/.test(msg)) {
-    return "That code didn't match. Double-check and try again.";
+    return "验证码不正确，请核对后重试。";
   }
   if (/expired/.test(msg)) {
-    return "That code has expired. Tap resend to get a new one.";
+    return "验证码已过期，请点击重新发送获取新验证码。";
   }
   if (/rate.?limit|too many|throttle/.test(msg)) {
-    return "Too many attempts. Wait a moment and try again.";
+    return "尝试次数过多，请稍后再试。";
   }
   if (/network|fetch|timeout|unreachable/.test(msg)) {
-    return "Can't reach Multica. Check your connection and retry.";
+    return "无法连接 Multica，请检查网络后重试。";
   }
   return fallback;
 }

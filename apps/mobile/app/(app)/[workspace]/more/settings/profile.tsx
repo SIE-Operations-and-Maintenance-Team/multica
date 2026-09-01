@@ -104,7 +104,7 @@ export default function ProfileSettingsScreen() {
 
   const uploadAvatar = async (asset: ImagePicker.ImagePickerAsset) => {
     if (asset.fileSize && asset.fileSize > MAX_AVATAR_BYTES) {
-      Alert.alert("图片过大", "Pick an image under 5 MB.");
+      Alert.alert("图片过大", "请选择小于 5 MB 的图片。");
       return;
     }
     const fileAsset: FileAsset = {
@@ -217,7 +217,7 @@ export default function ProfileSettingsScreen() {
       </View>
 
       <Button onPress={handleSave} disabled={!dirty || saving}>
-        <Text>{saving ? "Saving…" : "保存"}</Text>
+        <Text>{saving ? "保存中…" : "保存"}</Text>
       </Button>
     </ScrollView>
   );

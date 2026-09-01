@@ -43,7 +43,7 @@ const INBOX_GROUPS: Array<{
   {
     key: "mentions",
     label: "提及",
-    description: "When someone @mentions you, including @all and @squad.",
+    description: "当有人 @提及你时（包括 @all 和 @squad）。",
   },
   {
     key: "updates",

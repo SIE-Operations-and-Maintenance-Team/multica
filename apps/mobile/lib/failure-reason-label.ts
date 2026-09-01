@@ -19,41 +19,41 @@
  */
 const LABELS: Record<string, string> = {
   // Platform / scheduler side.
-  queued_expired: "Expired in queue",
-  runtime_offline: "Daemon offline",
-  runtime_recovery: "Daemon restarted",
-  timeout: "Task timed out",
-  iteration_limit: "Hit the iteration limit",
-  agent_blocked: "Waiting on human input",
-  api_invalid_request: "Rejected by the model API",
-  skill_bundle_unavailable: "Couldn't download the agent's skills",
-  runtime_cli_timeout: "Local runtime CLI timed out",
+  queued_expired: "队列中过期",
+  runtime_offline: "运行时离线",
+  runtime_recovery: "运行时已重启",
+  timeout: "任务超时",
+  iteration_limit: "达到迭代次数上限",
+  agent_blocked: "等待人工输入",
+  api_invalid_request: "被模型 API 拒绝",
+  skill_bundle_unavailable: "智能体技能下载失败",
+  runtime_cli_timeout: "本地运行时 CLI 超时",
 
   // Agent process side — provider.
-  "agent_error.provider_auth_or_access": "Provider auth failed",
-  "agent_error.provider_quota_limit": "Provider quota exhausted",
-  "agent_error.provider_capacity_or_rate_limit": "Rate limited by provider",
-  "agent_error.provider_server_error": "Provider server error",
-  "agent_error.provider_network": "Network error reaching provider",
+  "agent_error.provider_auth_or_access": "模型服务商认证失败",
+  "agent_error.provider_quota_limit": "模型服务商配额耗尽",
+  "agent_error.provider_capacity_or_rate_limit": "触发模型服务商限流",
+  "agent_error.provider_server_error": "模型服务商服务器错误",
+  "agent_error.provider_network": "连接模型服务商网络错误",
 
   // Agent process side — agent / runner.
-  "agent_error.process_failure": "Agent process crashed",
-  "agent_error.empty_or_unparseable_output": "Agent returned no usable output",
-  "agent_error.agent_timeout": "Agent timed out",
-  "agent_error.context_overflow": "Context window exceeded",
-  "agent_error.missing_config": "Missing API key or configuration",
-  "agent_error.model_not_found_or_unavailable": "Model unavailable",
-  "agent_error.runtime_version_unsupported": "Runner CLI version unsupported",
-  "agent_error.runtime_missing_executable": "Runner CLI not installed",
-  "agent_error.unknown": "Agent execution error",
+  "agent_error.process_failure": "智能体进程崩溃",
+  "agent_error.empty_or_unparseable_output": "智能体无有效输出",
+  "agent_error.agent_timeout": "智能体执行超时",
+  "agent_error.context_overflow": "上下文长度超限",
+  "agent_error.missing_config": "缺少 API 密钥或配置",
+  "agent_error.model_not_found_or_unavailable": "模型不可用",
+  "agent_error.runtime_version_unsupported": "运行器 CLI 版本不支持",
+  "agent_error.runtime_missing_executable": "运行器 CLI 未安装",
+  "agent_error.unknown": "智能体执行错误",
 
   // Pre-MUL-1949 coarse values, still present on historical rows.
-  agent_error: "Agent execution error",
-  codex_semantic_inactivity: "Codex semantic inactivity timeout",
-  manual: "Cancelled by user",
+  agent_error: "智能体执行错误",
+  codex_semantic_inactivity: "Codex 语义无活动超时",
+  manual: "已被用户取消",
 };
 
 export function failureReasonLabel(reason: string | null | undefined): string {
-  if (!reason) return "Failed";
-  return LABELS[reason] ?? "Failed";
+  if (!reason) return "失败";
+  return LABELS[reason] ?? "失败";
 }

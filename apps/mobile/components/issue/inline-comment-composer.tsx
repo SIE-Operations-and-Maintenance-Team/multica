@@ -56,8 +56,8 @@ export function InlineCommentComposer({ issueId }: { issueId: string }) {
         params: { workspace: wsSlug ?? "", mode: "comment" },
       }}
       uploadContext={{ issueId }}
-      placeholder="Add a comment…"
-      pillLabel="Add a comment, @ to mention…"
+      placeholder="添加评论…"
+      pillLabel="添加评论，@ 可提及…"
       pillIcon="chatbubble-ellipses-outline"
       replyTarget={
         replyTarget

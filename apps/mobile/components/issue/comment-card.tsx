@@ -245,7 +245,7 @@ function ResolvedThreadBar({
         onPress={onExpand}
         className="flex-row items-center gap-2.5 px-4 py-3 rounded-2xl bg-surface-1 active:opacity-70"
         accessibilityRole="button"
-        accessibilityLabel={`Resolved thread by ${authorsLabel}, ${total} ${total === 1 ? "message" : "messages"}. Tap to expand.`}
+        accessibilityLabel={`已解决会话（${authorsLabel}，${total} 条消息）。点按展开。`}
       >
         <Ionicons name="checkmark-circle" size={18} color={mutedFg} />
         <Text

@@ -52,8 +52,8 @@ export function useFileAttach() {
     ): Promise<FileAttachResult | null> => {
       if (asset.size != null && asset.size > MAX_FILE_SIZE) {
         Alert.alert(
-          "File too large",
-          "Files must be smaller than 100 MB.",
+          "文件过大",
+          "文件需小于 100 MB。",
         );
         return null;
       }
@@ -67,8 +67,8 @@ export function useFileAttach() {
         };
       } catch (err) {
         Alert.alert(
-          "Upload failed",
-          err instanceof Error ? err.message : "Unknown error",
+          "上传失败",
+          err instanceof Error ? err.message : "未知错误",
         );
         return null;
       } finally {

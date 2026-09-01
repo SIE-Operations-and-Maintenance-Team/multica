@@ -47,7 +47,7 @@ export default function SwitchWorkspaceRoute() {
     if (ws.slug === activeSlug) return;
     Alert.alert(
       "切换工作区",
-      `Switch to "${ws.name}"?`,
+      `切换到"${ws.name}"？`,
       [
         { text: "取消", style: "cancel" },
         {
@@ -107,7 +107,7 @@ function WorkspaceRow({
       accessibilityLabel={
         active
           ? `${workspace.name}, current workspace`
-          : `Switch to ${workspace.name}`
+          : `切换到 ${workspace.name}`
       }
       className={cn(
         "flex-row items-center gap-3 px-4 py-3 active:bg-secondary",

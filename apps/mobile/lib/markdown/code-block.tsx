@@ -192,7 +192,7 @@ function CodeBlockHeader({ code, lang }: Props) {
         onPress={onCopy}
         hitSlop={8}
         accessibilityRole="button"
-        accessibilityLabel={copied ? "Code copied" : "Copy code"}
+        accessibilityLabel={copied ? "代码已复制" : "复制代码"}
       >
         {copied ? (
           <CheckIcon color={t.success} />

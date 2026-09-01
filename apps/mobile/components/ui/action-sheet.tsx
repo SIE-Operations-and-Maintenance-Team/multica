@@ -70,7 +70,7 @@ function AndroidActionSheetHost() {
 
   useEffect(() => {
     requestHost = (config) => {
-      // Clear first so a chained show (e.g. the comment menu's "React…"
+      // Clear first so a chained show (e.g. the comment menu's "表情…"
       // nested sheet fired from an item callback) starts from a closed
       // menu — opening while a dismiss animation is still running drops
       // the second menu. One frame later we mount the new items and open.

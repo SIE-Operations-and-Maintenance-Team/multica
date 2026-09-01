@@ -511,10 +511,10 @@ function ElapsedCaption({
 }) {
   const label =
     variant === "replied"
-      ? `Replied in ${formatElapsedMs(elapsedMs)}`
+      ? `回复耗时 ${formatElapsedMs(elapsedMs)}`
       : variant === "finished"
-        ? `Finished in ${formatElapsedMs(elapsedMs)}`
-        : `Failed after ${formatElapsedMs(elapsedMs)}`;
+        ? `耗时 ${formatElapsedMs(elapsedMs)}`
+        : `${formatElapsedMs(elapsedMs)} 后失败`;
   return (
     <Text className="text-xs text-muted-foreground/80 mt-1">{label}</Text>
   );

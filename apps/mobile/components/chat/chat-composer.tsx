@@ -104,13 +104,13 @@ export function ChatComposer({
         pathname: "/[workspace]/mention-picker",
         params: { workspace: wsSlug ?? "", mode: "chat" },
       }}
-      placeholder={sending ? "Agent is working…" : "Message…"}
+      placeholder={sending ? "智能体工作中…" : "消息…"}
       pillLabel={
         sending
-          ? "Agent is working…"
+          ? "智能体工作中…"
           : disabled
             ? (disabledReason ?? "聊天不可用")
-            : "Message…"
+            : "消息…"
       }
       pillIcon="chatbubble-ellipses-outline"
       disabled={disabled}

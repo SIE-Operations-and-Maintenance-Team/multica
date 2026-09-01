@@ -37,17 +37,17 @@ describe("sendFailureMessage", () => {
     const message = sendFailureMessage(
       apiError({ reason_code: "invocation_not_allowed" }),
     );
-    expect(message).toMatch(/no longer have permission/i);
-    expect(message).not.toMatch(/try again/i);
+    expect(message).toMatch(/无权运行/);
+    expect(message).not.toMatch(/重试/);
   });
 
   it("names the runtime for agent_runtime_required", () => {
     expect(
       sendFailureMessage(apiError({ reason_code: "agent_runtime_required" })),
-    ).toMatch(/runtime/i);
+    ).toMatch(/运行时/);
   });
 
   it("falls back to a retryable message for anything else", () => {
-    expect(sendFailureMessage(new Error("timeout"))).toMatch(/try again/i);
+    expect(sendFailureMessage(new Error("timeout"))).toMatch(/重试/);
   });
 });

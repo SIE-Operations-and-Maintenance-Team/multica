@@ -167,7 +167,7 @@ export default function NewProject() {
         className={canCreate ? "px-1 py-1" : "px-1 py-1 opacity-40"}
       >
         <Text className="text-base text-brand font-semibold">
-          {create.isPending ? "Creating…" : "创建"}
+          {create.isPending ? "创建中…" : "创建"}
         </Text>
       </Pressable>
     );

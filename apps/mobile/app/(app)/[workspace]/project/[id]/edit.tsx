@@ -115,7 +115,7 @@ export default function EditProject() {
         className={canSave ? "px-1 py-1" : "px-1 py-1 opacity-40"}
       >
         <Text className="text-base text-brand font-semibold">
-          {update.isPending ? "Saving…" : "保存"}
+          {update.isPending ? "保存中…" : "保存"}
         </Text>
       </Pressable>
     );

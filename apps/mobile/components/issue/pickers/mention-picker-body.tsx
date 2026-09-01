@@ -288,7 +288,7 @@ export function MentionPickerBody({ query, mode = "comment" }: Props) {
             ) : (
               <Text className="flex-1 text-base text-foreground">
                 {item.kind === "all"
-                  ? "Everyone (@all)"
+                  ? "所有人（@all）"
                   : item.kind === "member"
                     ? item.member.name
                     : item.kind === "agent"

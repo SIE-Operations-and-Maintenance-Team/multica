@@ -85,7 +85,7 @@ export default function AddResourceRoute() {
           <TextField
             value={label}
             onChangeText={setLabel}
-            placeholder="e.g. Backend"
+            placeholder="例如：后端服务"
           />
         </View>
       </View>
