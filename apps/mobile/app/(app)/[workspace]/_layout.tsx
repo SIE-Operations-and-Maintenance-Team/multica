@@ -135,14 +135,14 @@ export default function WorkspaceLayout() {
         <Stack.Screen
           name="issue/[id]"
           options={{
-            title: "Issue",
+            title: "事项",
             headerBackTitle: "返回",
           }}
         />
         <Stack.Screen
           name="project/[id]"
           options={{
-            title: "Project",
+            title: "项目",
             headerBackTitle: "返回",
           }}
         />
@@ -195,7 +195,7 @@ export default function WorkspaceLayout() {
           options={{
             ...SHEET_OPTIONS,
             headerShown: true,
-            title: "Assignee",
+            title: "负责人",
           }}
         />
         <Stack.Screen
@@ -207,7 +207,7 @@ export default function WorkspaceLayout() {
           options={{
             ...SHEET_OPTIONS,
             headerShown: true,
-            title: "Mention",
+            title: "提及",
           }}
         />
         <Stack.Screen
@@ -260,7 +260,7 @@ export default function WorkspaceLayout() {
           options={{
             ...SHEET_OPTIONS,
             headerShown: true,
-            title: "Assignee",
+            title: "负责人",
           }}
         />
         <Stack.Screen
@@ -299,7 +299,7 @@ export default function WorkspaceLayout() {
         />
         <Stack.Screen
           name="more/agents"
-          options={{ title: "Agents", headerBackTitle: "返回" }}
+          options={{ title: "智能体", headerBackTitle: "返回" }}
         />
         <Stack.Screen
           name="more/pins"

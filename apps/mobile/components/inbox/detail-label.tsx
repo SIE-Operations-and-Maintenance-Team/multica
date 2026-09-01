@@ -26,25 +26,25 @@ import { cn } from "@/lib/utils";
 
 // Mirrors PRIORITY_CONFIG.label in packages/core/issues/config/priority.ts
 const PRIORITY_LABEL: Record<IssuePriority, string> = {
-  urgent: "Urgent",
-  high: "High",
-  medium: "Medium",
-  low: "Low",
+  urgent: "紧急",
+  high: "高",
+  medium: "中",
+  low: "低",
   none: "无优先级",
 };
 
 // Mirrors useTypeLabels in packages/views/inbox/components/inbox-detail-label.tsx
 const TYPE_LABEL: Record<InboxItemType, string> = {
-  issue_assigned: "Assigned",
-  issue_subscribed: "Subscribed",
-  unassigned: "Unassigned",
-  assignee_changed: "Reassigned",
+  issue_assigned: "已分配",
+  issue_subscribed: "已订阅",
+  unassigned: "未分配",
+  assignee_changed: "重新指派",
   status_changed: "状态变更",
   priority_changed: "优先级变更",
   start_date_changed: "开始日期变更",
   due_date_changed: "截止日期变更",
   new_comment: "新评论",
-  mentioned: "Mentioned",
+  mentioned: "提及了我",
   review_requested: "请求评审",
   task_completed: "任务完成",
   task_failed: "任务失败",

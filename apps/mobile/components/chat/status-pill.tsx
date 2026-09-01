@@ -78,20 +78,20 @@ function pickStage(
 ): Stage {
   // Mirrors web: deferred is an older turn waiting for retry backoff, not
   // active model work, so it must not fall through to "Thinking".
-  if (status === "deferred") return { label: "Retrying" };
+  if (status === "deferred") return { label: "重试中" };
   if (
     (status === "queued" || status === "dispatched") &&
     availability === "offline"
   ) {
-    return { label: "Offline", static: true };
+    return { label: "离线", static: true };
   }
   if (
     (status === "queued" || status === "dispatched") &&
     availability === "unstable"
   ) {
-    return { label: "Reconnecting" };
+    return { label: "重连中" };
   }
-  if (status === "queued") return { label: "Queued" };
+  if (status === "queued") return { label: "排队中" };
   if (status === "dispatched") return { label: "正在启动" };
 
   let latest: TaskMessagePayload | null = null;
@@ -102,14 +102,14 @@ function pickStage(
       break;
     }
   }
-  if (!latest) return { label: "Thinking" };
-  if (latest.type === "thinking") return { label: "Thinking" };
-  if (latest.type === "text") return { label: "Typing" };
+  if (!latest) return { label: "思考中" };
+  if (latest.type === "thinking") return { label: "思考中" };
+  if (latest.type === "text") return { label: "输入中" };
   if (latest.type === "tool_use") {
     const slug = (latest.tool ?? "").toLowerCase();
-    return { label: TOOL_LABELS[slug] ?? "Working" };
+    return { label: TOOL_LABELS[slug] ?? "工作中" };
   }
-  return { label: "Thinking" };
+  return { label: "思考中" };
 }
 
 // Tabular figures for the 1Hz counter — proportional digits change the text

@@ -12,9 +12,11 @@ import { useNativeSearchBar } from "@/lib/use-native-search-bar";
 export default function NewIssueAssigneePickerRoute() {
   const assignee = useNewIssueDraftStore((s) => s.assignee);
   const setAssignee = useNewIssueDraftStore((s) => s.setAssignee);
-  const query = useNativeSearchBar("搜索成员", { autoFocus: true });
+  const { query, searchBar } = useNativeSearchBar("搜索成员", { autoFocus: true });
 
   return (
+  <>
+    {searchBar}
     <AssigneePickerBody
       value={assignee}
       query={query}
@@ -23,5 +25,6 @@ export default function NewIssueAssigneePickerRoute() {
         router.back();
       }}
     />
+  </>
   );
 }

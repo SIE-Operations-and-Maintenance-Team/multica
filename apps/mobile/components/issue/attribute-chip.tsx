@@ -2,7 +2,7 @@
  * Generic attribute chip used in the issue-detail header. Each chip pairs
  * an icon node (any RN element — StatusIcon, PriorityIcon, ActorAvatar,
  * emoji, etc) with a textual label. Filled = the property has a value;
- * dimmed = empty placeholder ("Label", "Cycle", ...).
+ * dimmed = empty placeholder ("标签", "Cycle", ...).
  *
  * The chip becomes a Pressable when `onPress` is provided. Without onPress
  * it renders as a plain View — used for read-only chips (e.g. project

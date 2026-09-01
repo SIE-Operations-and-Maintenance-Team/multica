@@ -23,7 +23,7 @@ export function ModalCloseButton() {
       variant="secondary"
       className="size-7 rounded-full"
       onPress={() => router.back()}
-      accessibilityLabel="Close"
+      accessibilityLabel="关闭"
     />
   );
 }

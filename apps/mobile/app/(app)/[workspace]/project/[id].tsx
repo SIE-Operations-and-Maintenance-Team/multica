@@ -9,13 +9,12 @@
  * Per-record realtime: `useProjectRealtime(id, onDeleted=back)` subscribes
  * to `project:updated` (full replace) and `project:deleted` (pop back).
  *
- * Right-top "…" menu (ActionSheetIOS) → Edit / Delete. Delete asks for
+ * Right-top "…" menu (showActionSheet, Android DropdownMenu fallback) → Delete asks for
  * confirmation via `Alert.alert` per iOS HIG (destructive actions need
  * a second tap).
  */
 import { useCallback } from "react";
 import {
-  ActionSheetIOS,
   ActivityIndicator,
   Alert,
   Linking,
@@ -27,6 +26,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, router, useLocalSearchParams } from "expo-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Text } from "@/components/ui/text";
+import { showActionSheet } from "@/components/ui/action-sheet";
 import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
 import { ProjectHeaderCard } from "@/components/project/project-header-card";
@@ -89,25 +89,23 @@ export default function ProjectDetail() {
     const wsUrl = process.env.EXPO_PUBLIC_WEB_URL;
     const options = [
       "取消",
-      isPinned ? "Unpin" : "Pin",
+      isPinned ? "取消置顶" : "置顶",
       "编辑详情",
       ...(wsUrl ? ["在网页打开"] : []),
       "删除",
     ];
     const destructiveIndex = options.length - 1;
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options,
-        cancelButtonIndex: 0,
-        destructiveButtonIndex: destructiveIndex,
-      },
-      (i) => {
+    showActionSheet({
+      options,
+      cancelButtonIndex: 0,
+      destructiveButtonIndex: destructiveIndex,
+      onAction: (i) => {
         const label = options[i];
-        if (label === "Pin") {
+        if (label === "置顶") {
           createPin.mutate({ item_type: "project", item_id: project.id });
           return;
         }
-        if (label === "Unpin") {
+        if (label === "取消置顶") {
           deletePin.mutate({ itemType: "project", itemId: project.id });
           return;
         }
@@ -123,7 +121,7 @@ export default function ProjectDetail() {
           onDelete();
         }
       },
-    );
+    });
   };
 
   const onDelete = () => {
@@ -149,7 +147,7 @@ export default function ProjectDetail() {
     <SafeAreaView className="flex-1 bg-background" edges={["bottom"]}>
       <Stack.Screen
         options={{
-          title: project?.title || "Project",
+          title: project?.title || "项目",
           headerBackTitle: "返回",
           headerRight: project
             ? () => (

@@ -58,9 +58,9 @@ export function CreateFormAttributeRow() {
   const { categoryOf, colorOf, labelOf } = useIssueStatuses();
   const assigneeLabel = assignee
     ? getName(assignee.type, assignee.id)
-    : "Assignee";
+    : "负责人";
   const priorityLabel =
-    priority === "none" ? "Priority" : PRIORITY_LABEL[priority];
+    priority === "none" ? "优先级" : PRIORITY_LABEL[priority];
 
   const open = (field: NewIssuePickerField) => {
     if (!wsSlug) return;
@@ -133,7 +133,7 @@ export function CreateFormAttributeRow() {
               <Ionicons name="folder-outline" size={14} color="#a1a1aa" />
             )
           }
-          label={project?.title ?? "Project"}
+          label={project?.title ?? "项目"}
           variant={project ? "filled" : "dimmed"}
           onPress={() => open("project")}
         />

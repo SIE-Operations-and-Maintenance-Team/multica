@@ -126,18 +126,18 @@ function fallbackSummary(task: AgentTask): string {
       return "快速创建";
     case "direct":
     default:
-      return "Task";
+      return "任务";
   }
 }
 
 const STATUS_LABEL: Record<AgentTask["status"], string> = {
-  queued: "Queued",
-  dispatched: "Starting",
+  queued: "排队中",
+  dispatched: "启动中",
   waiting_local_directory: "等待目录",
-  running: "Running",
+  running: "运行中",
   completed: "完成",
-  failed: "Failed",
-  cancelled: "Cancelled",
+  failed: "失败",
+  cancelled: "已取消",
 };
 
 const STATUS_CLASS: Record<AgentTask["status"], string> = {
@@ -164,7 +164,7 @@ const FAILURE_REASON_LABEL: Record<string, string> = {
   queued_expired: "队列过期",
   runtime_offline: "运行时离线",
   runtime_recovery: "运行时恢复",
-  timeout: "Timeout",
+  timeout: "超时",
   iteration_limit: "迭代达上限",
   agent_blocked: "需要输入",
   api_invalid_request: "请求被拒绝",
@@ -188,5 +188,5 @@ const FAILURE_REASON_LABEL: Record<string, string> = {
 
   agent_error: "智能体错误",
   codex_semantic_inactivity: "Codex 无活动",
-  manual: "Manual",
+  manual: "手动",
 };

@@ -17,7 +17,7 @@ export default function IssueAssigneePickerRoute() {
   const wsId = useWorkspaceStore((s) => s.currentWorkspaceId);
   const { data: issue } = useQuery(issueDetailOptions(wsId, id));
   const updateIssue = useUpdateIssue(id);
-  const query = useNativeSearchBar("搜索成员", { autoFocus: true });
+  const { query, searchBar } = useNativeSearchBar("搜索成员", { autoFocus: true });
 
   const value =
     issue?.assignee_type && issue?.assignee_id
@@ -25,6 +25,8 @@ export default function IssueAssigneePickerRoute() {
       : null;
 
   return (
+  <>
+    {searchBar}
     <AssigneePickerBody
       value={value}
       query={query}
@@ -40,5 +42,6 @@ export default function IssueAssigneePickerRoute() {
         router.back();
       }}
     />
+  </>
   );
 }

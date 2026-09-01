@@ -18,7 +18,7 @@
  * first is still dismissing — the callback runs after dismissal completes.
  */
 import { useCallback, useState } from "react";
-import { ActionSheetIOS, Alert } from "react-native";
+import { Alert } from "react-native";
 import { router } from "expo-router";
 import * as Clipboard from "expo-clipboard";
 import * as Haptics from "expo-haptics";
@@ -34,6 +34,7 @@ import {
   useToggleCommentReaction,
 } from "@/data/mutations/issues";
 import { QUICK_EMOJIS } from "@/lib/quick-emojis";
+import { showActionSheet } from "@/components/ui/action-sheet";
 
 const QUICK_ROW_SIZE = 5;
 
@@ -99,16 +100,14 @@ export function useCommentLongPress(
       ? actions.findIndex((a) => a.kind === "delete")
       : undefined;
 
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options,
-        cancelButtonIndex,
-        ...(destructiveButtonIndex !== undefined &&
-        destructiveButtonIndex >= 0
-          ? { destructiveButtonIndex }
-          : {}),
-      },
-      (i) => {
+    showActionSheet({
+      options,
+      cancelButtonIndex,
+      destructiveButtonIndex:
+        destructiveButtonIndex !== undefined && destructiveButtonIndex >= 0
+          ? destructiveButtonIndex
+          : undefined,
+      onAction: (i) => {
         setIsPressed(false);
         const action = actions[i];
         if (!action || action.kind === "cancel") return;
@@ -188,7 +187,7 @@ export function useCommentLongPress(
             return;
         }
       },
-    );
+    });
   }, [
     entry,
     issueId,
@@ -216,9 +215,10 @@ function presentReactSheet(args: {
   const options = [...emojis, "More reactions…", "取消"];
   const cancelButtonIndex = options.length - 1;
 
-  ActionSheetIOS.showActionSheetWithOptions(
-    { options, cancelButtonIndex },
-    (i) => {
+  showActionSheet({
+    options,
+    cancelButtonIndex,
+    onAction: (i) => {
       if (i === cancelButtonIndex) return;
       if (i === emojis.length) {
         if (!wsSlug) return;
@@ -243,5 +243,5 @@ function presentReactSheet(args: {
       );
       toggle(emoji, existing);
     },
-  );
+  });
 }

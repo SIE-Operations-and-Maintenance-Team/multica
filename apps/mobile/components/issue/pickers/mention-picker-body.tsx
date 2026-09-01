@@ -152,21 +152,21 @@ export function MentionPickerBody({ query, mode = "comment" }: Props) {
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((m): Row => ({ kind: "member", member: m }));
       if (memberRows.length > 0) {
-        out.push({ kind: "section", label: "People" }, ...memberRows);
+        out.push({ kind: "section", label: "成员" }, ...memberRows);
       }
       const agentRows = [...agents]
         .filter((a) => matchName(a.name))
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((a): Row => ({ kind: "agent", agent: a }));
       if (agentRows.length > 0) {
-        out.push({ kind: "section", label: "Agents" }, ...agentRows);
+        out.push({ kind: "section", label: "智能体" }, ...agentRows);
       }
       const squadRows = [...squads]
         .filter((s) => !s.archived_at && matchName(s.name))
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((s): Row => ({ kind: "squad", squad: s }));
       if (squadRows.length > 0) {
-        out.push({ kind: "section", label: "Squads" }, ...squadRows);
+        out.push({ kind: "section", label: "小队" }, ...squadRows);
       }
     }
 
@@ -298,11 +298,11 @@ export function MentionPickerBody({ query, mode = "comment" }: Props) {
             )}
             {item.kind === "agent" ? (
               <Text className="text-sm text-muted-foreground">
-                {isAgentRuntimeBound(item.agent) ? "Agent" : "需要运行时"}
+                {isAgentRuntimeBound(item.agent) ? "智能体" : "需要运行时"}
               </Text>
             ) : item.kind === "squad" ? (
               <Text className="text-sm text-muted-foreground">
-                {needsRuntime ? "负责人需要运行时" : "Squad"}
+                {needsRuntime ? "负责人需要运行时" : "小队"}
               </Text>
             ) : null}
             {isSelected(item) ? (

@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import {
-  ActionSheetIOS,
   Alert,
   FlatList,
   View,
@@ -8,6 +7,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { showActionSheet } from "@/components/ui/action-sheet";
 import type { InboxItem } from "@multica/core/types";
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
@@ -83,14 +83,12 @@ export default function Inbox() {
       "归档已完成",
       "全部归档",
     ];
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options,
-        cancelButtonIndex: 0,
-        destructiveButtonIndex: 4,
-        title: "Inbox",
-      },
-      (i) => {
+    showActionSheet({
+      options,
+      cancelButtonIndex: 0,
+      destructiveButtonIndex: 4,
+      title: "收件箱",
+      onAction: (i) => {
         if (i === 1) markAllRead.mutate();
         else if (i === 2) archiveAllRead.mutate();
         else if (i === 3) archiveCompleted.mutate();
@@ -109,13 +107,13 @@ export default function Inbox() {
           );
         }
       },
-    );
+    });
   };
 
   return (
     <View className="flex-1 bg-background">
       <Header
-        title="Inbox"
+        title="收件箱"
         right={
           <>
             <IconButton

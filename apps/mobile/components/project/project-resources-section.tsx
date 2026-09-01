@@ -50,7 +50,7 @@ export function ProjectResourcesSection({ projectId, onAdd }: Props) {
       [
         { text: "取消", style: "cancel" },
         {
-          text: "Detach",
+          text: "移除",
           style: "destructive",
           onPress: () => remove.mutate(resource.id),
         },

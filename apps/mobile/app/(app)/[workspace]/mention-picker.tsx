@@ -27,6 +27,11 @@ export default function MentionPickerRoute() {
   const mode: Mode = rawMode === "chat" ? "chat" : "comment";
   const placeholder =
     mode === "chat" ? "引用事项" : "搜索成员或事项";
-  const query = useNativeSearchBar(placeholder, { autoFocus: true });
-  return <MentionPickerBody mode={mode} query={query} />;
+  const { query, searchBar } = useNativeSearchBar(placeholder, { autoFocus: true });
+  return (
+    <>
+      {searchBar}
+      <MentionPickerBody mode={mode} query={query} />
+    </>
+  );
 }

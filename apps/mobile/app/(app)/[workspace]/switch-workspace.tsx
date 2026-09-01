@@ -51,7 +51,7 @@ export default function SwitchWorkspaceRoute() {
       [
         { text: "取消", style: "cancel" },
         {
-          text: "Switch",
+          text: "切换",
           onPress: () => {
             router.dismiss();
             router.replace(`/${ws.slug}/inbox`);

@@ -16,11 +16,11 @@
  * native alternative" threshold in apps/mobile/CLAUDE.md.
  */
 import { useCallback, useState } from "react";
-import { ActionSheetIOS } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import * as Haptics from "expo-haptics";
 import type { ChatMessage } from "@multica/core/types";
 import { useChatSelectStore } from "@/data/chat-select-store";
+import { showActionSheet } from "@/components/ui/action-sheet";
 
 export function useChatMessageLongPress(
   message: ChatMessage,
@@ -53,9 +53,10 @@ export function useChatMessageLongPress(
 
     const cancelButtonIndex = options.length - 1;
 
-    ActionSheetIOS.showActionSheetWithOptions(
-      { options, cancelButtonIndex },
-      (i) => {
+    showActionSheet({
+      options,
+      cancelButtonIndex,
+      onAction: (i) => {
         setIsPressed(false);
         const action = actions[i];
         if (!action || action.kind === "cancel") return;
@@ -74,7 +75,7 @@ export function useChatMessageLongPress(
             return;
         }
       },
-    );
+    });
   }, [message]);
 
   return { onLongPress, isPressed };

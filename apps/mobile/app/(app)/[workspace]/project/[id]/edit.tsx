@@ -153,7 +153,7 @@ export default function EditProject() {
                 />
               </Field>
 
-              <Field label="Title">
+              <Field label="标题">
                 <TextInput
                   value={title}
                   onChangeText={setTitle}

@@ -12,7 +12,6 @@
  */
 import { useCallback, useEffect } from "react";
 import {
-  ActionSheetIOS,
   ActivityIndicator,
   Alert,
   Linking,
@@ -20,6 +19,7 @@ import {
 } from "react-native";
 import { Stack, router, useLocalSearchParams } from "expo-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { showActionSheet } from "@/components/ui/action-sheet";
 import * as Clipboard from "expo-clipboard";
 import type { Issue } from "@multica/core/types";
 import { Text } from "@/components/ui/text";
@@ -107,7 +107,7 @@ export default function IssueDetail() {
 
   // Three-dot menu: Pin/Unpin / Copy link / Open on web (if web URL set) /
   // Delete. Mirrors apps/mobile/app/(app)/[workspace]/project/[id].tsx — same
-  // ActionSheetIOS + Alert.alert confirm pattern. Property edits (status,
+  // showActionSheet + Alert.alert confirm pattern. Property edits (status,
   // priority, assignee, due_date) live on the IssueHeaderCard chips inside
   // the timeline list, not in this menu — one entry per action.
   const onPressMore = useCallback(() => {
@@ -117,24 +117,22 @@ export default function IssueDetail() {
       ? `${webUrl}/${wsSlug}/issue/${issue.identifier}`
       : null;
     const options: string[] = ["取消"];
-    options.push(isPinned ? "Unpin" : "Pin");
+    options.push(isPinned ? "取消置顶" : "置顶");
     options.push("编辑详情");
     if (issueLink) options.push("复制链接");
     if (issueLink) options.push("在网页打开");
     options.push("删除事项");
     const destructiveIndex = options.length - 1;
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options,
-        cancelButtonIndex: 0,
-        destructiveButtonIndex: destructiveIndex,
-        title: issue.identifier,
-      },
-      (i) => {
+    showActionSheet({
+      options,
+      cancelButtonIndex: 0,
+      destructiveButtonIndex: destructiveIndex,
+      title: issue.identifier,
+      onAction: (i) => {
         const label = options[i];
-        if (label === "Pin") {
+        if (label === "置顶") {
           createPin.mutate({ item_type: "issue", item_id: issue.id });
-        } else if (label === "Unpin") {
+        } else if (label === "取消置顶") {
           deletePin.mutate({ itemType: "issue", itemId: issue.id });
         } else if (label === "编辑详情") {
           if (wsSlug) router.push(`/${wsSlug}/issue/${issue.id}/edit`);
@@ -150,14 +148,14 @@ export default function IssueDetail() {
           );
         }
       },
-    );
+    });
   }, [issue, wsSlug, deleteIssue, isPinned, createPin, deletePin]);
 
   return (
     <View className="flex-1 bg-background">
       <Stack.Screen
         options={{
-          title: issue?.identifier ?? "Issue",
+          title: issue?.identifier ?? "事项",
           headerBackTitle: "返回",
           headerRight: issue
             ? () => (

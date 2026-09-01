@@ -263,11 +263,11 @@ function WorkspaceCard({
       disabled={!canSwitch}
       className="h-12 gap-3"
       accessibilityLabel={
-        canSwitch ? "切换工作区" : currentWorkspaceName ?? "Workspace"
+        canSwitch ? "切换工作区" : currentWorkspaceName ?? "工作区"
       }
     >
       <WorkspaceAvatar
-        name={currentWorkspaceName ?? "Workspace"}
+        name={currentWorkspaceName ?? "工作区"}
         avatarUrl={currentWorkspaceAvatarUrl}
         size={32}
       />
@@ -276,7 +276,7 @@ function WorkspaceCard({
           className="text-sm font-medium text-foreground"
           numberOfLines={1}
         >
-          {currentWorkspaceName ?? "Workspace"}
+          {currentWorkspaceName ?? "工作区"}
         </Text>
       </View>
       {canSwitch ? (

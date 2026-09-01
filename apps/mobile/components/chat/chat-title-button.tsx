@@ -21,7 +21,7 @@ export function ChatTitleButton({
   currentAgent,
   onPress,
 }: Props) {
-  const agentName = currentAgent?.name ?? "Chat";
+  const agentName = currentAgent?.name ?? "聊天";
   const subtitle = chatSessionDisplayTitle(currentSession?.title);
 
   return (

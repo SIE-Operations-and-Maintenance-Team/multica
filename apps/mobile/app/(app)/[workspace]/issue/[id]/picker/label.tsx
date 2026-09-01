@@ -24,7 +24,7 @@ export default function IssueLabelPickerRoute() {
   const attachLabel = useAttachLabel(id);
   const detachLabel = useDetachLabel(id);
   const createLabel = useCreateLabel();
-  const query = useNativeSearchBar("搜索标签", { autoFocus: true });
+  const { query, searchBar } = useNativeSearchBar("搜索标签", { autoFocus: true });
 
   // Synchronous lock to prevent double-submit on rapid taps on the Create
   // row before React state updates — mirrors web's `creatingRef` pattern in
@@ -34,6 +34,8 @@ export default function IssueLabelPickerRoute() {
   const attached = issue?.labels ?? [];
 
   return (
+  <>
+    {searchBar}
     <LabelPickerBody
       attached={attached}
       query={query}
@@ -55,5 +57,6 @@ export default function IssueLabelPickerRoute() {
         );
       }}
     />
+  </>
   );
 }

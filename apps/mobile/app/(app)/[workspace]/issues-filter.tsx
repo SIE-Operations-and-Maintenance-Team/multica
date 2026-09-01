@@ -33,10 +33,10 @@ const PRIORITY_ORDER: IssuePriority[] = [
 // Label map duplicated across several mobile files — out of scope to
 // consolidate per the SheetShell migration plan.
 const PRIORITY_LABEL: Record<IssuePriority, string> = {
-  urgent: "Urgent",
-  high: "High",
-  medium: "Medium",
-  low: "Low",
+  urgent: "紧急",
+  high: "高",
+  medium: "中",
+  low: "低",
   none: "无优先级",
 };
 

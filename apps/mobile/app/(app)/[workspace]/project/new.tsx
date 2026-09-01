@@ -196,7 +196,7 @@ export default function NewProject() {
             />
           </Field>
 
-          <Field label="Title">
+          <Field label="标题">
             <TextInput
               value={title}
               onChangeText={setTitle}
@@ -220,7 +220,7 @@ export default function NewProject() {
 
           <View className="flex-row gap-2">
             <View className="flex-1">
-              <Field label="Status">
+              <Field label="状态">
                 <Pressable
                   onPress={() => openPicker("status")}
                   className="flex-row items-center gap-2 bg-secondary/50 rounded-md px-3 py-2.5"
@@ -233,7 +233,7 @@ export default function NewProject() {
               </Field>
             </View>
             <View className="flex-1">
-              <Field label="Priority">
+              <Field label="优先级">
                 <Pressable
                   onPress={() => openPicker("priority")}
                   className="flex-row items-center gap-2 bg-secondary/50 rounded-md px-3 py-2.5"

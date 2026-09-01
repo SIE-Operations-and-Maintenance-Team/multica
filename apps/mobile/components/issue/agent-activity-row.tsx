@@ -43,7 +43,7 @@ export function AgentActivityRow({ issueId }: Props) {
   const { data: allTasks = [] } = useQuery(issueTasksOptions(wsId, issueId));
 
   const activeCount = activeTasks.length;
-  // "Past" = tasks not currently active. The /task-runs endpoint returns the
+  // "历史" = tasks not currently active. The /task-runs endpoint returns the
   // full list, so we filter rather than fetching a separate past-only query.
   const pastCount = useMemo(
     () =>

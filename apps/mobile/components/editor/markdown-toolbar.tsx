@@ -68,7 +68,7 @@ export function MarkdownToolbar({
         <Ionicons name="list-outline" size={18} color={ICON_COLOR} />
       </ToolbarButton>
       <ToolbarButton
-        accessibilityLabel="Checklist"
+        accessibilityLabel="清单"
         onPress={onCheckbox}
         disabled={disabled}
       >
@@ -82,7 +82,7 @@ export function MarkdownToolbar({
         <Ionicons name="code-slash-outline" size={18} color={ICON_COLOR} />
       </ToolbarButton>
       <ToolbarButton
-        accessibilityLabel="Quote"
+        accessibilityLabel="引用"
         onPress={onQuote}
         disabled={disabled}
       >

@@ -184,7 +184,7 @@ export function AssigneePickerBody({ value, query, onChange }: Props) {
           )}
           <Text className="flex-1 text-base text-foreground">
             {item.kind === "unassigned"
-              ? "Unassigned"
+              ? "未分配"
               : item.kind === "member"
                 ? item.member.name
                 : item.kind === "agent"
@@ -197,11 +197,11 @@ export function AssigneePickerBody({ value, query, onChange }: Props) {
               the same row. Members carry no tag (they're the default actor). */}
           {item.kind === "agent" ? (
             <Text className="text-sm text-muted-foreground">
-              {isAgentRuntimeBound(item.agent) ? "Agent" : "需要运行时"}
+              {isAgentRuntimeBound(item.agent) ? "智能体" : "需要运行时"}
             </Text>
           ) : item.kind === "squad" ? (
             <Text className="text-sm text-muted-foreground">
-              {needsRuntime ? "负责人需要运行时" : "Squad"}
+              {needsRuntime ? "负责人需要运行时" : "小队"}
             </Text>
           ) : null}
           {isSelected(item) ? (

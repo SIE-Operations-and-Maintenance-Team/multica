@@ -59,9 +59,9 @@ import { THEME } from "@/lib/theme";
 // row past the safe width when filter icon shares the row. Per-status
 // counts still appear on the SectionList headers below.
 const SCOPES: { value: IssuesScope; label: string }[] = [
-  { value: "all", label: "All" },
+  { value: "all", label: "全部" },
   { value: "members", label: "成员" },
-  { value: "agents", label: "Agents" },
+  { value: "agents", label: "智能体" },
 ];
 
 export default function IssuesPage() {

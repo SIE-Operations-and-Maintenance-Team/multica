@@ -162,7 +162,7 @@ export default function EditIssue() {
             <Text className="text-sm text-muted-foreground">Loading…</Text>
           ) : (
             <>
-              <Field label="Title">
+              <Field label="标题">
                 <TextInput
                   value={title}
                   onChangeText={setTitle}

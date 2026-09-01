@@ -61,7 +61,7 @@ export default function AddResourceRoute() {
           }`}
         >
           <Text className="text-sm font-semibold text-primary">
-            {submitting ? "Attaching…" : "Attach"}
+            {submitting ? "添加中…" : "添加"}
           </Text>
         </Pressable>
       </View>

@@ -141,7 +141,7 @@ export function ProjectLeadPickerBody({ value, query, onChange }: Props) {
             numberOfLines={1}
           >
             {item.kind === "unassigned"
-              ? "Unassigned"
+              ? "未分配"
               : item.kind === "member"
                 ? item.member.name
                 : item.agent.name}

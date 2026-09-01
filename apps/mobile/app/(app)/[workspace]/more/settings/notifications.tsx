@@ -27,7 +27,7 @@ const INBOX_GROUPS: Array<{
 }> = [
   {
     key: "assignments",
-    label: "Assignments",
+    label: "指派",
     description: "当你被分配事项或被移出负责人时。",
   },
   {
@@ -37,12 +37,12 @@ const INBOX_GROUPS: Array<{
   },
   {
     key: "comments",
-    label: "Comments",
+    label: "评论",
     description: "你订阅的事项有新评论时。",
   },
   {
     key: "mentions",
-    label: "Mentions",
+    label: "提及",
     description: "When someone @mentions you, including @all and @squad.",
   },
   {
@@ -132,7 +132,7 @@ export default function NotificationsSettingsScreen() {
       </Section>
 
       <Section
-        title="System"
+        title="系统"
         description="Multica-wide announcements and important account events."
       >
         <View className="flex-row items-center px-4 py-3 gap-3">

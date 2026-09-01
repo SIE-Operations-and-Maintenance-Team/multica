@@ -46,7 +46,7 @@ export function ProjectPropertiesSection({
   return (
     <View className="border-y border-border bg-background">
       <Row
-        label="Status"
+        label="状态"
         onPress={onPressStatus}
         left={<ProjectStatusIcon status={project.status} size={16} />}
         right={
@@ -57,7 +57,7 @@ export function ProjectPropertiesSection({
       />
       <Separator />
       <Row
-        label="Priority"
+        label="优先级"
         onPress={onPressPriority}
         left={<ProjectPriorityIcon priority={project.priority} size={16} />}
         right={
@@ -68,7 +68,7 @@ export function ProjectPropertiesSection({
       />
       <Separator />
       <Row
-        label="Lead"
+        label="负责人"
         onPress={onPressLead}
         left={
           leadName ? (
@@ -90,7 +90,7 @@ export function ProjectPropertiesSection({
                 : "text-sm text-muted-foreground"
             }
           >
-            {leadName ?? "Unassigned"}
+            {leadName ?? "未分配"}
           </Text>
         }
       />

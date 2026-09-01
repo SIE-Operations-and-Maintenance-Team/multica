@@ -33,9 +33,9 @@ import { THEME } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 const THEME_OPTIONS: Array<{ value: ThemePreference; label: string }> = [
-  { value: "light", label: "Light" },
-  { value: "dark", label: "Dark" },
-  { value: "system", label: "System" },
+  { value: "light", label: "浅色" },
+  { value: "dark", label: "深色" },
+  { value: "system", label: "系统" },
 ];
 
 function initialsOf(name: string | undefined): string {
@@ -92,7 +92,7 @@ export default function SettingsPage() {
       className="flex-1 bg-background"
       contentContainerClassName="px-4 py-4 gap-6"
     >
-      <SectionGroup title="Account">
+      <SectionGroup title="账号">
         <NavRow
           onPress={goProfile}
           chevronColor={mutedFg}
@@ -120,7 +120,7 @@ export default function SettingsPage() {
         />
       </SectionGroup>
 
-      <SectionGroup title="Workspaces">
+      <SectionGroup title="工作区">
         {isLoading ? (
           <View className="py-4 items-center">
             <ActivityIndicator />
@@ -151,7 +151,7 @@ export default function SettingsPage() {
         )}
       </SectionGroup>
 
-      <SectionGroup title="Appearance">
+      <SectionGroup title="外观">
         {/* Two converging entry points by design, NOT a double-fire:
               - Tap on small radio circle  → RadioGroupItem (Pressable, inner) consumes → onValueChange fires
               - Tap on text / row padding  → outer Pressable.onPress fires

@@ -74,14 +74,14 @@ export default function IssueRunsRoute() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="px-4 gap-3 pb-4">
           {active.length > 0 ? (
-            <Section title="Active">
+            <Section title="运行中">
               {active.map((task) => (
                 <RunRow key={task.id} task={task} issueId={id} />
               ))}
             </Section>
           ) : null}
           {past.length > 0 ? (
-            <Section title="Past">
+            <Section title="历史">
               {past.map((task) => (
                 <RunRow key={task.id} task={task} issueId={id} />
               ))}

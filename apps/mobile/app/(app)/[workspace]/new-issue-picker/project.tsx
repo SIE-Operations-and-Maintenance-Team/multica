@@ -11,9 +11,11 @@ import { useNativeSearchBar } from "@/lib/use-native-search-bar";
 export default function NewIssueProjectPickerRoute() {
   const project = useNewIssueDraftStore((s) => s.project);
   const setProject = useNewIssueDraftStore((s) => s.setProject);
-  const query = useNativeSearchBar("搜索项目", { autoFocus: true });
+  const { query, searchBar } = useNativeSearchBar("搜索项目", { autoFocus: true });
 
   return (
+  <>
+    {searchBar}
     <ProjectPickerBody
       value={project}
       query={query}
@@ -22,5 +24,6 @@ export default function NewIssueProjectPickerRoute() {
         router.back();
       }}
     />
+  </>
   );
 }
