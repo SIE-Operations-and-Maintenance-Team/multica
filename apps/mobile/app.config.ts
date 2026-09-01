@@ -17,12 +17,12 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     ...config,
     name: isProd
-      ? "Multica"
+      ? "SMOM Multica"
       : isStaging
-        ? "Multica (Staging)"
-        : "Multica (Dev)",
+        ? "SMOM Multica (Staging)"
+        : "SMOM Multica (Dev)",
     slug: "multica-mobile",
-    version: "0.1.0",
+    version: "1.0.0",
     orientation: "portrait",
     userInterfaceStyle: "automatic",
     scheme: "multica",
@@ -30,6 +30,16 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     // (apps/desktop/build/icon.png). Expo prebuild generates every required
     // iOS icon size from this single PNG.
     icon: "./assets/icon.png",
+    // Dark splash background matching BrandSplash (components/brand/
+    // brand-splash.tsx): the native splash (centered icon, Android 12+
+    // system-controlled) hands off to the copyright splash with no white
+    // flash. Copyright copy itself lives in BrandSplash — Android 12+
+    // does not allow text on the native splash screen.
+    splash: {
+      image: "./assets/icon.png",
+      resizeMode: "contain",
+      backgroundColor: "#0b0f19",
+    },
     ios: {
       // Expo keeps the top-level portrait policy for iPhone while adding all
       // iPad orientations required for multitasking when tablet support is on.
