@@ -60,7 +60,7 @@ function DueDateHeader({
 }) {
   return (
     <View className="flex-row items-center justify-between px-4 pt-4 pb-2">
-      <Text className="text-base font-semibold text-foreground">Due date</Text>
+      <Text className="text-base font-semibold text-foreground">截止日期</Text>
       <View className="flex-row items-center gap-1">
         {hasValue ? (
           <Pressable
@@ -68,7 +68,7 @@ function DueDateHeader({
             hitSlop={6}
             className="px-2 py-1 rounded-md active:bg-secondary"
           >
-            <Text className="text-sm text-destructive">Clear</Text>
+            <Text className="text-sm text-destructive">清除</Text>
           </Pressable>
         ) : null}
         <Pressable
@@ -76,7 +76,7 @@ function DueDateHeader({
           hitSlop={6}
           className="px-2 py-1 rounded-md active:bg-secondary"
         >
-          <Text className="text-sm font-medium text-primary">Done</Text>
+          <Text className="text-sm font-medium text-primary">完成</Text>
         </Pressable>
       </View>
     </View>

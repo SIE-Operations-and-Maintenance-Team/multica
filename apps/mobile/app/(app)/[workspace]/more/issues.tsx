@@ -32,7 +32,7 @@ import type {
 } from "@multica/core/types";
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
-// Header chrome (back + "Issues" title) comes from the parent Stack
+// Header chrome (back + "事项" title) comes from the parent Stack
 // (`apps/mobile/app/(app)/[workspace]/_layout.tsx:269`). The Filter
 // affordance now lives in <ScopeToolbar> below, matching web's
 // IssuesHeader pattern (scope + filter share a row).
@@ -60,7 +60,7 @@ import { THEME } from "@/lib/theme";
 // counts still appear on the SectionList headers below.
 const SCOPES: { value: IssuesScope; label: string }[] = [
   { value: "all", label: "All" },
-  { value: "members", label: "Members" },
+  { value: "members", label: "成员" },
   { value: "agents", label: "Agents" },
 ];
 
@@ -153,14 +153,14 @@ export default function IssuesPage() {
             {error instanceof Error ? error.message : "unknown error"}
           </Text>
           <Button variant="outline" onPress={() => refetch()}>
-            <Text>Retry</Text>
+            <Text>重试</Text>
           </Button>
         </View>
       ) : showEmptyState ? (
         <EmptyState
           message={
             hasActiveFilters
-              ? "No issues match the current filters."
+              ? "没有符合当前筛选条件的事项。"
               : emptyMessageForScope(scope)
           }
         />
@@ -214,7 +214,7 @@ function FilterButton({
         variant="outline"
         size="sm"
         onPress={onPress}
-        accessibilityLabel="Filter"
+        accessibilityLabel="筛选"
         className="w-9 px-0"
       >
         <Ionicons
@@ -372,10 +372,10 @@ function EmptyState({ message }: { message: string }) {
 function emptyMessageForScope(scope: IssuesScope): string {
   switch (scope) {
     case "all":
-      return "No issues in this workspace.";
+      return "该工作区暂无事项。";
     case "members":
-      return "No issues assigned to a member.";
+      return "没有分配给成员的事项。";
     case "agents":
-      return "No issues assigned to agents or squads.";
+      return "没有分配给智能体或小队的事项。";
   }
 }

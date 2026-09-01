@@ -151,7 +151,7 @@ export function MentionSuggestionBar({
         for (const i of matchedRecent) out.push({ kind: "issue", issue: i });
       }
       if (matchedMine.length > 0) {
-        out.push({ kind: "section", label: "My issues" });
+        out.push({ kind: "section", label: "我的事项" });
         for (const i of matchedMine) out.push({ kind: "issue", issue: i });
       }
       if (out.length === 0) out.push({ kind: "empty" });
@@ -200,7 +200,7 @@ export function MentionSuggestionBar({
     const out: Row[] = [];
     if (showAll) out.push({ kind: "all" });
     if (matchedMembers.length > 0) {
-      out.push({ kind: "section", label: "Members" });
+      out.push({ kind: "section", label: "成员" });
       for (const m of matchedMembers) out.push({ kind: "member", member: m });
     }
     if (matchedAgents.length > 0) {
@@ -332,7 +332,7 @@ export function MentionSuggestionBar({
                   {item.agent.name}
                 </Text>
                 <Badge
-                  label={runtimeBound ? "Agent" : "Needs runtime"}
+                  label={runtimeBound ? "Agent" : "需要运行时"}
                   tone={runtimeBound ? "brand" : "outline"}
                 />
               </Pressable>

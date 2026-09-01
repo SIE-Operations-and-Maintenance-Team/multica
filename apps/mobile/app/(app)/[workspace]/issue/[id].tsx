@@ -116,12 +116,12 @@ export default function IssueDetail() {
     const issueLink = webUrl
       ? `${webUrl}/${wsSlug}/issue/${issue.identifier}`
       : null;
-    const options: string[] = ["Cancel"];
+    const options: string[] = ["取消"];
     options.push(isPinned ? "Unpin" : "Pin");
-    options.push("Edit details");
-    if (issueLink) options.push("Copy link");
-    if (issueLink) options.push("Open on web");
-    options.push("Delete issue");
+    options.push("编辑详情");
+    if (issueLink) options.push("复制链接");
+    if (issueLink) options.push("在网页打开");
+    options.push("删除事项");
     const destructiveIndex = options.length - 1;
     ActionSheetIOS.showActionSheetWithOptions(
       {
@@ -136,13 +136,13 @@ export default function IssueDetail() {
           createPin.mutate({ item_type: "issue", item_id: issue.id });
         } else if (label === "Unpin") {
           deletePin.mutate({ itemType: "issue", itemId: issue.id });
-        } else if (label === "Edit details") {
+        } else if (label === "编辑详情") {
           if (wsSlug) router.push(`/${wsSlug}/issue/${issue.id}/edit`);
-        } else if (label === "Copy link" && issueLink) {
+        } else if (label === "复制链接" && issueLink) {
           Clipboard.setStringAsync(issueLink);
-        } else if (label === "Open on web" && issueLink) {
+        } else if (label === "在网页打开" && issueLink) {
           Linking.openURL(issueLink);
-        } else if (label === "Delete issue") {
+        } else if (label === "删除事项") {
           confirmDelete(issue, () =>
             deleteIssue.mutate(issue.id, {
               onSuccess: () => router.back(),
@@ -158,7 +158,7 @@ export default function IssueDetail() {
       <Stack.Screen
         options={{
           title: issue?.identifier ?? "Issue",
-          headerBackTitle: "Back",
+          headerBackTitle: "返回",
           headerRight: issue
             ? () => (
                 <View className="flex-row items-center gap-2">
@@ -169,7 +169,7 @@ export default function IssueDetail() {
                   <IconButton
                     name="ellipsis-horizontal"
                     onPress={onPressMore}
-                    accessibilityLabel="Issue actions"
+                    accessibilityLabel="事项操作"
                   />
                 </View>
               )
@@ -189,7 +189,7 @@ export default function IssueDetail() {
               : "not found"}
           </Text>
           <Button variant="outline" onPress={() => detail.refetch()}>
-            <Text>Retry</Text>
+            <Text>重试</Text>
           </Button>
         </View>
       ) : (
@@ -212,11 +212,11 @@ export default function IssueDetail() {
 
 function confirmDelete(issue: Issue, onConfirm: () => void) {
   Alert.alert(
-    "Delete issue?",
+    "删除事项？",
     `${issue.identifier} and its comments, reactions, and attachments will be permanently deleted. This cannot be undone.`,
     [
-      { text: "Cancel", style: "cancel" },
-      { text: "Delete", style: "destructive", onPress: onConfirm },
+      { text: "取消", style: "cancel" },
+      { text: "删除", style: "destructive", onPress: onConfirm },
     ],
   );
 }

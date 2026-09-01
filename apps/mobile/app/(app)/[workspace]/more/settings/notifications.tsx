@@ -28,17 +28,17 @@ const INBOX_GROUPS: Array<{
   {
     key: "assignments",
     label: "Assignments",
-    description: "When you're assigned an issue or removed as assignee.",
+    description: "当你被分配事项或被移出负责人时。",
   },
   {
     key: "status_changes",
-    label: "Status changes",
-    description: "When an issue's status changes.",
+    label: "状态变更",
+    description: "当事项状态变更时。",
   },
   {
     key: "comments",
     label: "Comments",
-    description: "New comments on issues you're subscribed to.",
+    description: "你订阅的事项有新评论时。",
   },
   {
     key: "mentions",
@@ -47,13 +47,13 @@ const INBOX_GROUPS: Array<{
   },
   {
     key: "updates",
-    label: "Issue updates",
-    description: "Edits to title, description, labels, priority, or due date.",
+    label: "事项更新",
+    description: "标题、描述、标签、优先级或截止日期的编辑。",
   },
   {
     key: "agent_activity",
-    label: "Agent activity",
-    description: "When an agent picks up, runs, or completes a task.",
+    label: "智能体动态",
+    description: "当智能体领取、执行或完成任务时。",
   },
 ];
 
@@ -103,8 +103,8 @@ export default function NotificationsSettingsScreen() {
       contentContainerClassName="px-4 py-4 gap-6"
     >
       <Section
-        title="Inbox notifications"
-        description="Which events show up in your inbox."
+        title="收件箱通知"
+        description="哪些事件会出现在你的收件箱。"
       >
         {INBOX_GROUPS.map((group, idx) => {
           const enabled = preferences[group.key] !== "muted";

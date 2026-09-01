@@ -30,7 +30,7 @@ const PRIORITY_LABEL: Record<IssuePriority, string> = {
   high: "High",
   medium: "Medium",
   low: "Low",
-  none: "No priority",
+  none: "无优先级",
 };
 
 // Mirrors useTypeLabels in packages/views/inbox/components/inbox-detail-label.tsx
@@ -39,18 +39,18 @@ const TYPE_LABEL: Record<InboxItemType, string> = {
   issue_subscribed: "Subscribed",
   unassigned: "Unassigned",
   assignee_changed: "Reassigned",
-  status_changed: "Status changed",
-  priority_changed: "Priority changed",
-  start_date_changed: "Start date changed",
-  due_date_changed: "Due date changed",
-  new_comment: "New comment",
+  status_changed: "状态变更",
+  priority_changed: "优先级变更",
+  start_date_changed: "开始日期变更",
+  due_date_changed: "截止日期变更",
+  new_comment: "新评论",
   mentioned: "Mentioned",
-  review_requested: "Review requested",
-  task_completed: "Task completed",
-  task_failed: "Task failed",
-  agent_blocked: "Agent blocked",
-  agent_completed: "Agent completed",
-  reaction_added: "Reaction added",
+  review_requested: "请求评审",
+  task_completed: "任务完成",
+  task_failed: "任务失败",
+  agent_blocked: "智能体受阻",
+  agent_completed: "智能体完成",
+  reaction_added: "添加了表情回应",
   quick_create_done: "Quick-create done",
   quick_create_failed: "Quick-create failed",
   quick_create_unconfirmed: "Quick-create needs a check",
@@ -58,7 +58,7 @@ const TYPE_LABEL: Record<InboxItemType, string> = {
 
 // due_date is a calendar day — format timezone-safely (no offset day shift).
 function shortDate(dateStr: string): string {
-  return formatDateOnly(dateStr, { month: "short", day: "numeric" }, "en-US");
+  return formatDateOnly(dateStr, { month: "long", day: "numeric" }, "zh-CN");
 }
 
 function singleLine(value: string | null | undefined): string {
@@ -83,7 +83,7 @@ export function InboxDetailLabel({
     const status = details.to;
     return (
       <View className={cn("flex-row items-center gap-1", className)}>
-        <Text className="text-xs text-muted-foreground">Set status to</Text>
+        <Text className="text-xs text-muted-foreground">状态改为</Text>
         <StatusIcon
           status={status}
           category={categoryOf(status)}
@@ -101,7 +101,7 @@ export function InboxDetailLabel({
     const priority = details.to as IssuePriority;
     return (
       <View className={cn("flex-row items-center gap-1", className)}>
-        <Text className="text-xs text-muted-foreground">Set priority to</Text>
+        <Text className="text-xs text-muted-foreground">优先级改为</Text>
         <PriorityIcon priority={priority} size={12} />
         <Text className="text-xs text-muted-foreground" numberOfLines={1}>
           {PRIORITY_LABEL[priority] ?? priority}
@@ -124,11 +124,11 @@ export function InboxDetailLabel({
         }
         return TYPE_LABEL[item.type];
       case "unassigned":
-        return "Removed assignee";
+        return "移除了负责人";
       case "due_date_changed":
         return details.to
           ? `Set due date to ${shortDate(details.to)}`
-          : "Removed due date";
+          : "移除了截止日期";
       case "new_comment":
         return singleLine(item.body) || TYPE_LABEL[item.type];
       case "reaction_added":

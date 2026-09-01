@@ -325,7 +325,7 @@ export function MessageComposer({
           ),
         );
       } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
+        const message = err instanceof Error ? err.message : "未知错误";
         setAttachments((prev) =>
           prev.map((it) =>
             it.localId === localId
@@ -347,7 +347,7 @@ export function MessageComposer({
     const picked = picker.assets[0];
     if (!picked) return;
     if (picked.fileSize != null && picked.fileSize > MAX_FILE_SIZE) {
-      Alert.alert("File too large", "Files must be smaller than 100 MB.");
+      Alert.alert("文件过大", "Files must be smaller than 100 MB.");
       return;
     }
     const filename = picked.fileName ?? `image-${Date.now()}.jpg`;
@@ -380,7 +380,7 @@ export function MessageComposer({
     const picked = picker.assets[0];
     if (!picked) return;
     if (picked.size != null && picked.size > MAX_FILE_SIZE) {
-      Alert.alert("File too large", "Files must be smaller than 100 MB.");
+      Alert.alert("文件过大", "Files must be smaller than 100 MB.");
       return;
     }
     const mimeType = picked.mimeType ?? "application/octet-stream";
@@ -497,7 +497,7 @@ export function MessageComposer({
               onPress={onClearReplyTarget}
               hitSlop={8}
               accessibilityRole="button"
-              accessibilityLabel="Cancel reply"
+              accessibilityLabel="取消回复"
             >
               <Ionicons
                 name="close-circle"
@@ -555,21 +555,21 @@ export function MessageComposer({
             iconSize={20}
             color={mentions.length > 0 ? theme.primary : undefined}
             onPress={onAtPress}
-            accessibilityLabel="Mention someone or an issue"
+            accessibilityLabel="提及成员或事项"
             className="h-8 w-8"
           />
           <IconButton
             name="image-outline"
             iconSize={20}
             onPress={onImagePress}
-            accessibilityLabel="Upload image"
+            accessibilityLabel="上传图片"
             className="h-8 w-8"
           />
           <IconButton
             name="attach-outline"
             iconSize={20}
             onPress={onFilePress}
-            accessibilityLabel="Upload file"
+            accessibilityLabel="上传文件"
             className="h-8 w-8"
           />
           <View className="flex-1" />
@@ -585,7 +585,7 @@ export function MessageComposer({
               disabled={!canSend}
               hitSlop={12}
               className="h-8 w-8 rounded-full"
-              accessibilityLabel="Send"
+              accessibilityLabel="发送"
               accessibilityState={{ disabled: !canSend }}
             />
           )}

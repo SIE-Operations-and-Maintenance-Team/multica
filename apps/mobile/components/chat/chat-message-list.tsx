@@ -381,8 +381,8 @@ function AssistantRow({
   );
   // no_response (MUL-4351, mirrors packages/views AssistantMessage): the agent
   // completed this turn without text. Keep the tool timeline and show a notice
-  // instead of an empty Markdown block; caption reads "Finished in" not
-  // "Replied in".
+  // instead of an empty Markdown block; caption reads "耗时" not
+  // "回复耗时".
   const isNoResponse = message.message_kind === "no_response";
   const body = (
     <View className="gap-1.5">
@@ -464,7 +464,7 @@ function QuickActions({
   return (
     <View
       className="flex-row flex-wrap gap-2 pt-0.5"
-      accessibilityLabel="Suggested follow-ups"
+      accessibilityLabel="建议追问"
     >
       {actions.slice(0, 3).map((action, index) => (
         <Pressable
@@ -558,7 +558,7 @@ function FailureBubble({
             <CollapsibleTrigger asChild>
               <View
                 accessibilityRole="button"
-                accessibilityLabel="Show error details"
+                accessibilityLabel="查看错误详情"
                 className="mt-1 flex-row items-center gap-1 active:opacity-70"
               >
                 <Ionicons

@@ -3,7 +3,7 @@
  *
  *   Header card (icon + title + description, tap → edit)
  *   Properties section (Status / Priority / Lead — tap chip → picker)
- *   Resources section (read-only by default, "Add" button → resource form)
+ *   Resources section (read-only by default, "添加" button → resource form)
  *   Related issues (Open / Done bucketed list)
  *
  * Per-record realtime: `useProjectRealtime(id, onDeleted=back)` subscribes
@@ -88,11 +88,11 @@ export default function ProjectDetail() {
     if (!project) return;
     const wsUrl = process.env.EXPO_PUBLIC_WEB_URL;
     const options = [
-      "Cancel",
+      "取消",
       isPinned ? "Unpin" : "Pin",
-      "Edit details",
-      ...(wsUrl ? ["Open on web"] : []),
-      "Delete",
+      "编辑详情",
+      ...(wsUrl ? ["在网页打开"] : []),
+      "删除",
     ];
     const destructiveIndex = options.length - 1;
     ActionSheetIOS.showActionSheetWithOptions(
@@ -111,11 +111,11 @@ export default function ProjectDetail() {
           deletePin.mutate({ itemType: "project", itemId: project.id });
           return;
         }
-        if (label === "Edit details") {
+        if (label === "编辑详情") {
           if (wsSlug) router.push(`/${wsSlug}/project/${id}/edit`);
           return;
         }
-        if (label === "Open on web" && wsUrl) {
+        if (label === "在网页打开" && wsUrl) {
           Linking.openURL(`${wsUrl}/${wsSlug}/projects/${id}`);
           return;
         }
@@ -128,12 +128,12 @@ export default function ProjectDetail() {
 
   const onDelete = () => {
     Alert.alert(
-      "Delete project?",
-      "This cannot be undone. Issues in this project will become unassigned from any project.",
+      "删除项目？",
+      "此操作不可撤销。该项目中的事项将不再属于任何项目。",
       [
-        { text: "Cancel", style: "cancel" },
+        { text: "取消", style: "cancel" },
         {
-          text: "Delete",
+          text: "删除",
           style: "destructive",
           onPress: () => {
             deleteProject.mutate(undefined, {
@@ -150,13 +150,13 @@ export default function ProjectDetail() {
       <Stack.Screen
         options={{
           title: project?.title || "Project",
-          headerBackTitle: "Back",
+          headerBackTitle: "返回",
           headerRight: project
             ? () => (
                 <IconButton
                   name="ellipsis-horizontal"
                   onPress={onPressMore}
-                  accessibilityLabel="Project actions"
+                  accessibilityLabel="项目操作"
                 />
               )
             : undefined,
@@ -175,7 +175,7 @@ export default function ProjectDetail() {
               : "not found"}
           </Text>
           <Button variant="outline" onPress={() => detail.refetch()}>
-            <Text>Retry</Text>
+            <Text>重试</Text>
           </Button>
         </View>
       ) : (

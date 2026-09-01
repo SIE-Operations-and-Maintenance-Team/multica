@@ -109,7 +109,7 @@ export function ChatComposer({
         sending
           ? "Agent is working…"
           : disabled
-            ? (disabledReason ?? "Chat unavailable")
+            ? (disabledReason ?? "聊天不可用")
             : "Message…"
       }
       pillIcon="chatbubble-ellipses-outline"
@@ -136,7 +136,7 @@ function StopButton({ onPress }: { onPress: () => void }) {
         className="h-8 w-8 items-center justify-center rounded-full bg-foreground active:opacity-80"
         hitSlop={12}
         accessibilityRole="button"
-        accessibilityLabel="Stop agent"
+        accessibilityLabel="停止智能体"
       >
         <View
           style={{

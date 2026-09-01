@@ -58,17 +58,17 @@ interface Stage {
 }
 
 const TOOL_LABELS: Record<string, string> = {
-  bash: "Running command",
-  exec: "Running command",
-  read: "Reading files",
-  glob: "Reading files",
-  grep: "Searching code",
-  write: "Making edits",
-  edit: "Making edits",
-  multi_edit: "Making edits",
-  multiedit: "Making edits",
-  web_search: "Searching web",
-  websearch: "Searching web",
+  bash: "正在执行命令",
+  exec: "正在执行命令",
+  read: "正在读取文件",
+  glob: "正在读取文件",
+  grep: "正在搜索代码",
+  write: "正在修改",
+  edit: "正在修改",
+  multi_edit: "正在修改",
+  multiedit: "正在修改",
+  web_search: "正在搜索网页",
+  websearch: "正在搜索网页",
 };
 
 function pickStage(
@@ -92,7 +92,7 @@ function pickStage(
     return { label: "Reconnecting" };
   }
   if (status === "queued") return { label: "Queued" };
-  if (status === "dispatched") return { label: "Starting up" };
+  if (status === "dispatched") return { label: "正在启动" };
 
   let latest: TaskMessagePayload | null = null;
   for (let i = taskMessages.length - 1; i >= 0; i--) {

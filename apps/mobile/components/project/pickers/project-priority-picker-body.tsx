@@ -28,7 +28,7 @@ export function ProjectPriorityPickerBody({ value, onChange }: Props) {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View className="px-4 pt-3 pb-2">
-        <Text className="text-lg font-semibold text-foreground">Priority</Text>
+        <Text className="text-lg font-semibold text-foreground">优先级</Text>
       </View>
       <View className="px-2">
         {PROJECT_PRIORITIES.map((priority) => {

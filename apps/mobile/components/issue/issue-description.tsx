@@ -1,7 +1,7 @@
 /**
  * Description block. Renders markdown via the standalone mobile markdown
  * renderer at apps/mobile/lib/markdown/. Empty / null descriptions show
- * a muted "No description." placeholder rather than collapsing the block,
+ * a muted "暂无描述。" placeholder rather than collapsing the block,
  * so the layout above the timeline stays stable when the user adds a
  * description later.
  *

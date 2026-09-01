@@ -4,7 +4,7 @@
  * Title and `+` button live in the native iOS Stack header (declared via
  * Stack.Screen options in parent `_layout.tsx`, overridden here to add
  * `headerRight`). Rendering an in-body title row on top of the native bar
- * would stack two "Projects" labels vertically.
+ * would stack two "项目" labels vertically.
  *
  * Sort: client-side by `updated_at` desc — most recently touched at top.
  * Mirrors web's default list ordering. WS `project:*` events keep the cache
@@ -68,7 +68,7 @@ export default function ProjectsPage() {
             {error instanceof Error ? error.message : "unknown error"}
           </Text>
           <Button variant="outline" onPress={() => refetch()}>
-            <Text>Retry</Text>
+            <Text>重试</Text>
           </Button>
         </View>
       ) : sorted.length === 0 ? (
@@ -103,7 +103,7 @@ function PlusButton({ onPress }: { onPress: () => void }) {
     <IconButton
       name="add"
       onPress={onPress}
-      accessibilityLabel="New project"
+      accessibilityLabel="新建项目"
     />
   );
 }
@@ -119,7 +119,7 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
         lead.
       </Text>
       <Button variant="default" onPress={onCreate}>
-        <Text>Create project</Text>
+        <Text>创建项目</Text>
       </Button>
     </View>
   );

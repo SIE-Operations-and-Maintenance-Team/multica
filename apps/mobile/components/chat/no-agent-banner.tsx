@@ -24,7 +24,7 @@ export function NoAgentBanner() {
       onPress={handlePress}
       className="mx-3 mt-2 mb-1 rounded-xl border border-border bg-secondary/50 px-3 py-2 active:opacity-80"
       accessibilityRole="button"
-      accessibilityLabel="No agents available, open agents settings"
+      accessibilityLabel="暂无可用智能体，请打开智能体设置"
     >
       <Text className="text-sm font-medium text-foreground">
         No agents available

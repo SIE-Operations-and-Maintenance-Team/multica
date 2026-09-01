@@ -67,12 +67,12 @@ export default function SettingsPage() {
 
   const onSignOut = () => {
     Alert.alert(
-      "Sign out",
+      "退出登录",
       "You'll need to sign in again to use Multica on this device.",
       [
-        { text: "Cancel", style: "cancel" },
+        { text: "取消", style: "cancel" },
         {
-          text: "Sign out",
+          text: "退出登录",
           style: "destructive",
           onPress: async () => {
             await clearWorkspace();
@@ -97,7 +97,7 @@ export default function SettingsPage() {
           onPress={goProfile}
           chevronColor={mutedFg}
           leading={
-            <Avatar alt={user?.name ?? "User avatar"} className="size-10">
+            <Avatar alt={user?.name ?? "用户头像"} className="size-10">
               {user?.avatar_url ? (
                 <AvatarImage source={{ uri: user.avatar_url }} />
               ) : null}
@@ -115,8 +115,8 @@ export default function SettingsPage() {
         <NavRow
           onPress={goNotifications}
           chevronColor={mutedFg}
-          title="Notifications"
-          subtitle="Inbox and system alerts"
+          title="通知"
+          subtitle="收件箱与系统提醒"
         />
       </SectionGroup>
 
@@ -186,7 +186,7 @@ export default function SettingsPage() {
 
       <View className="pt-2">
         <Button variant="destructive" onPress={onSignOut}>
-          <Text>Sign out</Text>
+          <Text>退出登录</Text>
         </Button>
       </View>
     </ScrollView>

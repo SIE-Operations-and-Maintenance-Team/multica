@@ -1,5 +1,5 @@
 /**
- * Pinned items list — mirrors the role of web's sidebar "Pinned" section
+ * Pinned items list — mirrors the role of web's sidebar "置顶" section
  * (packages/views/layout/app-sidebar.tsx PinnedItemRow), one screen up the
  * navigation tree because phones have no sidebar.
  *
@@ -80,7 +80,7 @@ export default function PinsPage() {
           {error instanceof Error ? error.message : "unknown error"}
         </Text>
         <Button variant="outline" onPress={() => refetch()}>
-          <Text>Retry</Text>
+          <Text>重试</Text>
         </Button>
       </View>
     );

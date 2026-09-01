@@ -1,7 +1,7 @@
 /**
- * "My Issues" tab. Three scopes — assigned / created / agents — mirroring
+ * "我的事项" tab. Three scopes — assigned / created / agents — mirroring
  * web's `packages/views/my-issues/components/my-issues-page.tsx:48-65`. The
- * `agents` scope label is "Agents and Squads" because the backend predicate
+ * `agents` scope label is "智能体与小队" because the backend predicate
  * (`involves_user_id`, MUL-2397) surfaces both the user's owned agents and
  * squads they're involved in (member / leader / has an owned agent inside).
  *
@@ -54,7 +54,7 @@ import { THEME } from "@/lib/theme";
 
 // Mobile pill row has tight width on SE3 (375pt). Three pills + Filter icon
 // must fit in 343pt usable space, so the agents scope renders "Agents" — the
-// full "Agents and Squads" label (~135pt) blows past safe limits and breaks
+// full "智能体与小队" label (~135pt) blows past safe limits and breaks
 // under Dynamic Type. Semantics unchanged: same backend predicate
 // (`involves_user_id`, MUL-2397) covers owned agents + related squads; the
 // empty state copy still says "agents or squads".
@@ -120,7 +120,7 @@ export default function MyIssues() {
 
   return (
     <View className="flex-1 bg-background">
-      <Header title="My Issues" right={<HeaderActions />} />
+      <Header title="我的事项" right={<HeaderActions />} />
       <ScopeToolbar
         scopes={SCOPES}
         scope={scope}
@@ -150,14 +150,14 @@ export default function MyIssues() {
             {error instanceof Error ? error.message : "unknown error"}
           </Text>
           <Button variant="outline" onPress={() => refetch()}>
-            <Text>Retry</Text>
+            <Text>重试</Text>
           </Button>
         </View>
       ) : showEmptyState ? (
         <EmptyState
           message={
             hasActiveFilters
-              ? "No issues match the current filters."
+              ? "没有符合当前筛选条件的事项。"
               : emptyMessageForScope(scope)
           }
         />
@@ -215,7 +215,7 @@ function FilterButton({
         variant="outline"
         size="sm"
         onPress={onPress}
-        accessibilityLabel="Filter"
+        accessibilityLabel="筛选"
         className="w-9 px-0"
       >
         <Ionicons
@@ -365,10 +365,10 @@ function EmptyState({ message }: { message: string }) {
 function emptyMessageForScope(scope: MyIssuesScope): string {
   switch (scope) {
     case "assigned":
-      return "No issues assigned to you.";
+      return "没有分配给你的事项。";
     case "created":
-      return "You haven't created any issues.";
+      return "你还没有创建过事项。";
     case "agents":
-      return "No issues assigned to your agents or squads yet.";
+      return "你的智能体和小队还没有被分配事项。";
   }
 }

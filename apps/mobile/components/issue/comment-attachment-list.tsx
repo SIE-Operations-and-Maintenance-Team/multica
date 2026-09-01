@@ -102,7 +102,7 @@ function FileCard({
         // The backend may return a server-relative URL like
         // `/api/attachments/{id}/download` when no CloudFront signer is
         // configured (MUL-2976). RN's `Linking.openURL` requires an
-        // absolute http(s) URL — it returns "Cannot open URL" otherwise —
+        // absolute http(s) URL — it returns "无法打开链接" otherwise —
         // so resolve against `EXPO_PUBLIC_API_URL` first.
         const target = resolveAttachmentUrl(attachment.download_url);
         if (target) {

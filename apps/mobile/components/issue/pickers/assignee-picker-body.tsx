@@ -197,11 +197,11 @@ export function AssigneePickerBody({ value, query, onChange }: Props) {
               the same row. Members carry no tag (they're the default actor). */}
           {item.kind === "agent" ? (
             <Text className="text-sm text-muted-foreground">
-              {isAgentRuntimeBound(item.agent) ? "Agent" : "Needs runtime"}
+              {isAgentRuntimeBound(item.agent) ? "Agent" : "需要运行时"}
             </Text>
           ) : item.kind === "squad" ? (
             <Text className="text-sm text-muted-foreground">
-              {needsRuntime ? "Leader needs runtime" : "Squad"}
+              {needsRuntime ? "负责人需要运行时" : "Squad"}
             </Text>
           ) : null}
           {isSelected(item) ? (
@@ -212,7 +212,7 @@ export function AssigneePickerBody({ value, query, onChange }: Props) {
       }}
       ListEmptyComponent={
         <View className="px-3 py-8 items-center">
-          <Text className="text-sm text-muted-foreground">No matches.</Text>
+          <Text className="text-sm text-muted-foreground">无匹配结果。</Text>
         </View>
       }
     />

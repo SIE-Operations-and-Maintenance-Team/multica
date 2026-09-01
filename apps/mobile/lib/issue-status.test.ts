@@ -83,7 +83,7 @@ describe("buildIssueStatusCatalog", () => {
     for (const key of ["backlog", "todo", "in_progress", "in_review", "done", "blocked", "cancelled"]) {
       expect(c.categoryOf(key)).toBe(key);
     }
-    expect(c.labelOf("in_review")).toBe("In Review");
+    expect(c.labelOf("in_review")).toBe("评审中");
     expect(c.colorOf("in_review")).toBeNull();
   });
 
@@ -113,7 +113,7 @@ describe("buildIssueStatusCatalog", () => {
       color: "#22c55e",
     });
     const c = buildIssueStatusCatalog([builtIn, entry("qa", "in_review", { name: "QA" })]);
-    expect(c.labelOf("in_review")).toBe("In Review");
+    expect(c.labelOf("in_review")).toBe("评审中");
     expect(c.colorOf("in_review")).toBeNull();
     expect(c.colorOf("qa")).toBe("#123456");
   });
@@ -175,7 +175,7 @@ describe("statusOptions", () => {
     ]);
     const inReview = statusOptions(c).filter((o) => o.category === "in_review");
     expect(inReview.map((o) => o.key)).toEqual(["in_review", "human_review"]);
-    expect(inReview.map((o) => o.label)).toEqual(["In Review", "Human Review"]);
+    expect(inReview.map((o) => o.label)).toEqual(["评审中", "Human Review"]);
     expect(inReview.map((o) => o.color)).toEqual([null, "#123456"]);
   });
 

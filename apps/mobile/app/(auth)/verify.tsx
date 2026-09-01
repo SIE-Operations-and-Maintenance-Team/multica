@@ -43,7 +43,7 @@ export default function Verify() {
       router.replace("/");
     } catch (err) {
       void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      setError(mapAuthError(err, "Couldn't verify the code. Try again."));
+      setError(mapAuthError(err, "验证失败，请重试。"));
       setSubmitting(false);
       otpRef.current?.clear();
       setCode("");
@@ -62,7 +62,7 @@ export default function Verify() {
       setCode("");
     } catch (err) {
       void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      setError(mapAuthError(err, "Couldn't resend the code. Try again."));
+      setError(mapAuthError(err, "重新发送失败，请重试。"));
     } finally {
       setResending(false);
     }
@@ -82,7 +82,7 @@ export default function Verify() {
                 Enter verification code
               </Text>
               <Text className="text-sm text-muted-foreground text-center">
-                We sent a 6-digit code to {email}
+                验证码已发送至 {email}
               </Text>
             </View>
           </View>
@@ -108,7 +108,7 @@ export default function Verify() {
               disabled={submitting || code.length < CODE_LENGTH}
               onPress={() => submit(code)}
             >
-              <Text>{submitting ? "Verifying..." : "Verify"}</Text>
+              <Text>{submitting ? "验证中..." : "验证"}</Text>
             </Button>
 
             <Pressable
@@ -127,7 +127,7 @@ export default function Verify() {
                   ? "Sending..."
                   : cooldown > 0
                     ? `Resend code in ${cooldown}s`
-                    : "Resend code"}
+                    : "重新发送验证码"}
               </Text>
             </Pressable>
 
@@ -136,7 +136,7 @@ export default function Verify() {
               disabled={submitting}
               onPress={() => router.back()}
             >
-              <Text>Use a different email</Text>
+              <Text>使用其他邮箱</Text>
             </Button>
           </View>
         </View>

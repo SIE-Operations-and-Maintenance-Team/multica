@@ -27,7 +27,7 @@ export default function Login() {
       router.push({ pathname: "/verify", params: { email: trimmed } });
     } catch (err) {
       void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      setError(mapAuthError(err, "Couldn't send the code. Try again."));
+      setError(mapAuthError(err, "验证码发送失败，请重试。"));
     } finally {
       setSubmitting(false);
     }
@@ -44,10 +44,10 @@ export default function Login() {
             <MulticaLogo size={32} />
             <View className="gap-1 items-center">
               <Text className="text-2xl font-semibold text-foreground">
-                Sign in to Multica
+                登录 Multica
               </Text>
               <Text className="text-sm text-muted-foreground text-center">
-                Enter your email and we&apos;ll send you a verification code.
+                输入你的邮箱，我们将发送验证码。
               </Text>
             </View>
           </View>
@@ -76,7 +76,7 @@ export default function Login() {
             disabled={submitting || !email.trim()}
             onPress={onSubmit}
           >
-            <Text>{submitting ? "Sending..." : "Send code"}</Text>
+            <Text>{submitting ? "发送中..." : "发送验证码"}</Text>
           </Button>
         </View>
       </KeyboardAvoidingView>

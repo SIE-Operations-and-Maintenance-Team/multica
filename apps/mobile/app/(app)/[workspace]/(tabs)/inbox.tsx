@@ -72,16 +72,16 @@ export default function Inbox() {
   };
 
   // Trailing batch menu — mirrors web's dropdown
-  // (packages/views/inbox/components/inbox-page.tsx). "Mark all read" is
-  // first (most common batch op); "Archive all" is destructive so it gets
+  // (packages/views/inbox/components/inbox-page.tsx). "全部标为已读" is
+  // first (most common batch op); "全部归档" is destructive so it gets
   // the iOS red treatment + Alert confirm.
   const onPressMenu = () => {
     const options = [
-      "Cancel",
-      "Mark all read",
-      "Archive all read",
-      "Archive completed",
-      "Archive all",
+      "取消",
+      "全部标为已读",
+      "归档已读",
+      "归档已完成",
+      "全部归档",
     ];
     ActionSheetIOS.showActionSheetWithOptions(
       {
@@ -96,12 +96,12 @@ export default function Inbox() {
         else if (i === 3) archiveCompleted.mutate();
         else if (i === 4) {
           Alert.alert(
-            "Archive all?",
-            "This archives every inbox item, read or unread. You can still find them via the issue pages.",
+            "全部归档？",
+            "将归档全部收件项（含未读）。之后仍可在事项页面找到它们。",
             [
-              { text: "Cancel", style: "cancel" },
+              { text: "取消", style: "cancel" },
               {
-                text: "Archive all",
+                text: "全部归档",
                 style: "destructive",
                 onPress: () => archiveAll.mutate(),
               },
@@ -121,7 +121,7 @@ export default function Inbox() {
             <IconButton
               name="ellipsis-horizontal"
               onPress={onPressMenu}
-              accessibilityLabel="Inbox actions"
+              accessibilityLabel="收件箱操作"
             />
             <HeaderActions />
           </>
@@ -136,7 +136,7 @@ export default function Inbox() {
             {error instanceof Error ? error.message : "unknown error"}
           </Text>
           <Button variant="outline" onPress={() => refetch()}>
-            <Text>Retry</Text>
+            <Text>重试</Text>
           </Button>
         </View>
       ) : !data || data.length === 0 ? (

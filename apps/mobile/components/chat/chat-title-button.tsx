@@ -30,7 +30,7 @@ export function ChatTitleButton({
       hitSlop={4}
       className="flex-row items-center gap-2 px-2 py-1 rounded-lg active:bg-secondary"
       accessibilityRole="button"
-      accessibilityLabel="Sessions and agent picker"
+      accessibilityLabel="会话与智能体选择器"
     >
       <ActorAvatar
         type={currentAgent ? "agent" : null}

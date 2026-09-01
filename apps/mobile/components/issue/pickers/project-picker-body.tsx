@@ -46,7 +46,7 @@ export function ProjectPickerBody({ value, query, onChange }: Props) {
 
     if (q) return projectRows;
 
-    // Pin selected project to the top (below "No project"). Apple HIG
+    // Pin selected project to the top (below "无项目"). Apple HIG
     // doesn't require this — product UX choice that mirrors assignee.
     const selected = projectRows.find(
       (r) => r.kind === "project" && r.project.id === value?.id,
@@ -96,7 +96,7 @@ export function ProjectPickerBody({ value, query, onChange }: Props) {
             className="flex-1 text-base text-foreground"
             numberOfLines={1}
           >
-            {item.kind === "none" ? "No project" : item.project.title}
+            {item.kind === "none" ? "无项目" : item.project.title}
           </Text>
           {isSelected(item) ? (
             <Ionicons name="checkmark" size={20} color={checkColor} />
@@ -107,7 +107,7 @@ export function ProjectPickerBody({ value, query, onChange }: Props) {
         <View className="px-3 py-8 items-center">
           <Text className="text-sm text-muted-foreground text-center">
             {query
-              ? "No matches."
+              ? "无匹配结果。"
               : "No projects in this workspace yet.\nCreate them on web."}
           </Text>
         </View>

@@ -16,7 +16,7 @@ export default function ProjectLeadPickerRoute() {
   const wsId = useWorkspaceStore((s) => s.currentWorkspaceId);
   const { data: project } = useQuery(projectDetailOptions(wsId, id));
   const updateProject = useUpdateProject(id);
-  const query = useNativeSearchBar("Search members or agents", {
+  const query = useNativeSearchBar("搜索成员或智能体", {
     autoFocus: true,
   });
 

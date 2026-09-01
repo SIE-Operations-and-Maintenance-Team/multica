@@ -65,7 +65,7 @@ interface Props {
    *  the correct issue's mutation key. */
   issueId: string;
   /** Human-readable identifier (e.g. `MUL-123`) used to build the shareable
-   *  web URL for the long-press "Copy Link" item. Optional — that item
+   *  web URL for the long-press "复制链接" item. Optional — that item
    *  hides when missing. */
   issueIdentifier: string | undefined;
   /** Inbox deep-link flash target. When this matches the root entry id we
@@ -264,7 +264,7 @@ function ResolvedThreadBar({
 /**
  * Resolved indicator row that sits at the top of an expanded resolved
  * thread. Carries the "who resolved + when" attribution and a collapse
- * affordance — equivalent to web's "Mark as resolved" header bar
+ * affordance — equivalent to web's "标记为已解决" header bar
  * (`packages/views/issues/components/comment-card.tsx:519-532`).
  *
  * Tap collapses the thread back to the bar without firing the
@@ -291,7 +291,7 @@ function ResolvedIndicator({
       onPress={onCollapse}
       className="flex-row items-center gap-2 active:opacity-60"
       accessibilityRole="button"
-      accessibilityLabel="Collapse resolved thread"
+      accessibilityLabel="收起已解决会话"
     >
       <Ionicons name="checkmark-circle" size={14} color={mutedFg} />
       <Text className="text-xs text-muted-foreground flex-1" numberOfLines={1}>
@@ -301,7 +301,7 @@ function ResolvedIndicator({
         </Text>
         {entry.resolved_at ? ` · ${timeAgo(entry.resolved_at)}` : ""}
       </Text>
-      <Text className="text-xs text-muted-foreground">Collapse</Text>
+      <Text className="text-xs text-muted-foreground">收起</Text>
     </Pressable>
   );
 }
@@ -559,15 +559,15 @@ function FailedActions({
         onPress={onRetry}
         hitSlop={6}
         accessibilityRole="button"
-        accessibilityLabel="Retry sending comment"
+        accessibilityLabel="重发评论"
       >
-        <Text className="text-xs text-primary font-medium">Retry</Text>
+        <Text className="text-xs text-primary font-medium">重试</Text>
       </Pressable>
       <Pressable
         onPress={onDiscard}
         hitSlop={6}
         accessibilityRole="button"
-        accessibilityLabel="Discard failed comment"
+        accessibilityLabel="放弃失败的评论"
       >
         <Text className="text-xs text-muted-foreground font-medium">
           Discard

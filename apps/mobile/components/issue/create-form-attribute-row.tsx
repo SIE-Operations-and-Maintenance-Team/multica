@@ -121,7 +121,7 @@ export function CreateFormAttributeRow() {
               color={dueDate ? undefined : "#a1a1aa"}
             />
           }
-          label={dueDate ? formatDueDate(dueDate) : "Due date"}
+          label={dueDate ? formatDueDate(dueDate) : "截止日期"}
           variant={dueDate ? "filled" : "dimmed"}
           onPress={() => open("due-date")}
         />
@@ -144,5 +144,5 @@ export function CreateFormAttributeRow() {
 
 // due_date is a calendar day — format timezone-safely (no offset day shift).
 function formatDueDate(iso: string): string {
-  return formatDateOnly(iso, { month: "short", day: "numeric" }) || "Due date";
+  return formatDateOnly(iso, { month: "short", day: "numeric" }) || "截止日期";
 }

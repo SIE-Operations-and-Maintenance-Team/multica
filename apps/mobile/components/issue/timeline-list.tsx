@@ -134,7 +134,7 @@ const HIGHLIGHT_HOLD_MS = 5000;
  *  the user is already about to see. */
 const AT_BOTTOM_SLACK_PX = 80;
 
-/** Sentinel id for the "New since last view" divider row injected into the
+/** Sentinel id for the "上次查看后新增" divider row injected into the
  *  FlatList data. Picked because it can never collide with a real comment
  *  / activity uuid. */
 const DIVIDER_ID = "__divider__";
@@ -197,7 +197,7 @@ export function TimelineList({
   const lastStampRef = useRef<string | null>(null);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
 
-  // ── "New since last view" divider ─────────────────────────────────────
+  // ── "上次查看后新增" divider ─────────────────────────────────────
   // Snapshot the last-viewed timestamp ONCE on mount. Subsequent WS
   // appends shouldn't shift the divider — the user wants a stable
   // "where I was when I came back" boundary. The store update happens on

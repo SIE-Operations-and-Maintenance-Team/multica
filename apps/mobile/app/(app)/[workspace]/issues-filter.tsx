@@ -37,7 +37,7 @@ const PRIORITY_LABEL: Record<IssuePriority, string> = {
   high: "High",
   medium: "Medium",
   low: "Low",
-  none: "No priority",
+  none: "无优先级",
 };
 
 type Scope = "my" | "all";
@@ -80,19 +80,19 @@ export default function IssuesFilterRoute() {
   return (
     <View className="flex-1">
       <View className="flex-row items-center justify-between px-4 pt-4 pb-3">
-        <Text className="text-base font-semibold text-foreground">Filter</Text>
+        <Text className="text-base font-semibold text-foreground">筛选</Text>
         {hasActive ? (
           <Pressable
             onPress={onClearFilters}
             hitSlop={8}
             className="px-2 py-1 active:opacity-60"
           >
-            <Text className="text-sm text-primary font-medium">Reset</Text>
+            <Text className="text-sm text-primary font-medium">重置</Text>
           </Pressable>
         ) : null}
       </View>
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <SectionLabel>Status</SectionLabel>
+        <SectionLabel>状态</SectionLabel>
         {statusChoices.map((option) => {
           const checked = statusFilters.includes(option.key);
           return (
@@ -118,7 +118,7 @@ export default function IssuesFilterRoute() {
           );
         })}
 
-        <SectionLabel>Priority</SectionLabel>
+        <SectionLabel>优先级</SectionLabel>
         {PRIORITY_ORDER.map((priority) => {
           const checked = priorityFilters.includes(priority);
           return (

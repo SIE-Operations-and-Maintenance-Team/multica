@@ -171,7 +171,7 @@ export function MentionPickerBody({ query, mode = "comment" }: Props) {
     }
 
     if (issueResults.length > 0) {
-      out.push({ kind: "section", label: "Issues" });
+      out.push({ kind: "section", label: "事项" });
       for (const i of issueResults) {
         out.push({ kind: "issue", issue: i });
       }
@@ -298,11 +298,11 @@ export function MentionPickerBody({ query, mode = "comment" }: Props) {
             )}
             {item.kind === "agent" ? (
               <Text className="text-sm text-muted-foreground">
-                {isAgentRuntimeBound(item.agent) ? "Agent" : "Needs runtime"}
+                {isAgentRuntimeBound(item.agent) ? "Agent" : "需要运行时"}
               </Text>
             ) : item.kind === "squad" ? (
               <Text className="text-sm text-muted-foreground">
-                {needsRuntime ? "Leader needs runtime" : "Squad"}
+                {needsRuntime ? "负责人需要运行时" : "Squad"}
               </Text>
             ) : null}
             {isSelected(item) ? (
@@ -313,7 +313,7 @@ export function MentionPickerBody({ query, mode = "comment" }: Props) {
       }}
       ListEmptyComponent={
         <View className="px-3 py-8 items-center">
-          <Text className="text-sm text-muted-foreground">No matches.</Text>
+          <Text className="text-sm text-muted-foreground">无匹配结果。</Text>
         </View>
       }
     />

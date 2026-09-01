@@ -147,8 +147,8 @@ export function LabelPickerBody({
         <View className="px-3 py-8 items-center">
           <Text className="text-sm text-muted-foreground text-center">
             {query
-              ? "No matches."
-              : "No labels in this workspace yet."}
+              ? "无匹配结果。"
+              : "该工作区还没有标签。"}
           </Text>
         </View>
       }

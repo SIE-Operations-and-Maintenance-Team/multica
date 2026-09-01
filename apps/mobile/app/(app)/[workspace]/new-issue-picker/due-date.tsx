@@ -36,7 +36,7 @@ export default function NewIssueDueDatePickerRoute() {
               hitSlop={6}
               className="px-2 py-1 rounded-md active:bg-secondary"
             >
-              <Text className="text-sm text-destructive">Clear</Text>
+              <Text className="text-sm text-destructive">清除</Text>
             </Pressable>
           ) : null}
           <Pressable
@@ -48,7 +48,7 @@ export default function NewIssueDueDatePickerRoute() {
             hitSlop={6}
             className="px-2 py-1 rounded-md active:bg-secondary"
           >
-            <Text className="text-sm font-medium text-primary">Done</Text>
+            <Text className="text-sm font-medium text-primary">完成</Text>
           </Pressable>
         </View>
       </View>

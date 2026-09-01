@@ -18,7 +18,7 @@
  * match web `packages/views/projects/components/project-detail.tsx`, NOT status
  * keys: a workspace's custom statuses live inside their category's group rather
  * than adding one of their own, and grouping by key dropped them from the list
- * entirely (MUL-6457). The earlier mobile-only "Open / Done" two-bucket layout
+ * entirely (MUL-6457). The earlier mobile-only "进行中 / 已完成" two-bucket layout
  * was a parity violation: the same status would appear in different visible
  * groups on mobile vs web. Cancelled is omitted on both clients.
  */
@@ -75,7 +75,7 @@ export function ProjectRelatedIssues({ projectId }: Props) {
           {error instanceof Error ? error.message : "unknown error"}
         </Text>
         <Button variant="outline" onPress={() => refetch()}>
-          <Text>Retry</Text>
+          <Text>重试</Text>
         </Button>
       </View>
     );
@@ -84,7 +84,7 @@ export function ProjectRelatedIssues({ projectId }: Props) {
   if ((data?.length ?? 0) === 0) {
     return (
       <View className="px-4 py-6">
-        <Text className="text-sm text-muted-foreground">No issues yet.</Text>
+        <Text className="text-sm text-muted-foreground">暂无事项。</Text>
       </View>
     );
   }

@@ -59,7 +59,7 @@ export default function ProfileSettingsScreen() {
   const dirty = name.trim() !== (user?.name ?? "") && name.trim().length > 0;
 
   const handleAvatarPick = () => {
-    const options = ["Take Photo", "Choose from Library", "Remove Photo", "Cancel"];
+    const options = ["拍照", "从相册选择", "移除头像", "取消"];
     const removeIndex = user?.avatar_url ? 2 : -1;
     const cancelIndex = user?.avatar_url ? 3 : 2;
     const visibleOptions = user?.avatar_url ? options : options.filter((_, i) => i !== 2);
@@ -82,7 +82,7 @@ export default function ProfileSettingsScreen() {
   const pickFromCamera = async () => {
     const perm = await ImagePicker.requestCameraPermissionsAsync();
     if (!perm.granted) {
-      Alert.alert("Permission needed", "Camera access is required to take a photo.");
+      Alert.alert("需要权限", "拍照需要相机权限。");
       return;
     }
     const result = await ImagePicker.launchCameraAsync({
@@ -106,7 +106,7 @@ export default function ProfileSettingsScreen() {
 
   const uploadAvatar = async (asset: ImagePicker.ImagePickerAsset) => {
     if (asset.fileSize && asset.fileSize > MAX_AVATAR_BYTES) {
-      Alert.alert("Image too large", "Pick an image under 5 MB.");
+      Alert.alert("图片过大", "Pick an image under 5 MB.");
       return;
     }
     const fileAsset: FileAsset = {
@@ -124,8 +124,8 @@ export default function ProfileSettingsScreen() {
       setUser(updated);
     } catch (err) {
       Alert.alert(
-        "Upload failed",
-        err instanceof Error ? err.message : "Could not upload avatar.",
+        "上传失败",
+        err instanceof Error ? err.message : "头像上传失败。",
       );
     } finally {
       setUploading(false);
@@ -139,8 +139,8 @@ export default function ProfileSettingsScreen() {
       setUser(updated);
     } catch (err) {
       Alert.alert(
-        "Remove failed",
-        err instanceof Error ? err.message : "Could not remove avatar.",
+        "移除失败",
+        err instanceof Error ? err.message : "头像移除失败。",
       );
     } finally {
       setUploading(false);
@@ -155,8 +155,8 @@ export default function ProfileSettingsScreen() {
       setUser(updated);
     } catch (err) {
       Alert.alert(
-        "Save failed",
-        err instanceof Error ? err.message : "Could not update profile.",
+        "保存失败",
+        err instanceof Error ? err.message : "资料更新失败。",
       );
     } finally {
       setSaving(false);
@@ -171,7 +171,7 @@ export default function ProfileSettingsScreen() {
     >
       <View className="items-center gap-3">
         <Pressable onPress={handleAvatarPick} disabled={uploading}>
-          <Avatar alt={user?.name ?? "Your avatar"} className="size-24">
+          <Avatar alt={user?.name ?? "你的头像"} className="size-24">
             {user?.avatar_url ? (
               <AvatarImage source={{ uri: user.avatar_url }} />
             ) : null}
@@ -195,18 +195,18 @@ export default function ProfileSettingsScreen() {
 
       <View className="gap-4">
         <View>
-          <Text className="text-xs text-muted-foreground mb-1.5">Name</Text>
+          <Text className="text-xs text-muted-foreground mb-1.5">名字</Text>
           <TextField
             value={name}
             onChangeText={setName}
-            placeholder="Your name"
+            placeholder="你的名字"
             autoCapitalize="words"
             autoCorrect={false}
             returnKeyType="done"
           />
         </View>
         <View>
-          <Text className="text-xs text-muted-foreground mb-1.5">Email</Text>
+          <Text className="text-xs text-muted-foreground mb-1.5">邮箱</Text>
           <View className="rounded-md border border-border bg-muted px-3 py-2.5">
             <Text className="text-base text-muted-foreground">
               {user?.email ?? "—"}
@@ -219,7 +219,7 @@ export default function ProfileSettingsScreen() {
       </View>
 
       <Button onPress={handleSave} disabled={!dirty || saving}>
-        <Text>{saving ? "Saving…" : "Save"}</Text>
+        <Text>{saving ? "Saving…" : "保存"}</Text>
       </Button>
     </ScrollView>
   );

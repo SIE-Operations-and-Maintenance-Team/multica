@@ -75,9 +75,9 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Pinned", icon: "pin", path: "/more/pins" },
-  { label: "Issues", icon: "list.bullet", path: "/more/issues" },
-  { label: "Projects", icon: "square.stack", path: "/more/projects" },
+  { label: "置顶", icon: "pin", path: "/more/pins" },
+  { label: "事项", icon: "list.bullet", path: "/more/issues" },
+  { label: "项目", icon: "square.stack", path: "/more/projects" },
 ];
 
 export function MoreTabDropdownAnchor({
@@ -193,7 +193,7 @@ function UserCard({
     <DropdownMenuItem
       onPress={onPress}
       className="h-12 gap-3"
-      accessibilityLabel="Account settings"
+      accessibilityLabel="账号设置"
     >
       {user?.avatar_url ? (
         <Image
@@ -263,7 +263,7 @@ function WorkspaceCard({
       disabled={!canSwitch}
       className="h-12 gap-3"
       accessibilityLabel={
-        canSwitch ? "Switch workspace" : currentWorkspaceName ?? "Workspace"
+        canSwitch ? "切换工作区" : currentWorkspaceName ?? "Workspace"
       }
     >
       <WorkspaceAvatar

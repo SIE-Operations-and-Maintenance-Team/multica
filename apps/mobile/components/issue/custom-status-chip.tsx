@@ -2,13 +2,13 @@
  * Names an issue's status when the surface around it only shows the CATEGORY
  * (MUL-6243).
  *
- * List sections are categories, so two issues sitting in the same "In Review"
- * section can be on different statuses — "Code Review" and "QA" — with nothing
+ * List sections are categories, so two issues sitting in the same "评审中"
+ * section can be on different statuses — "代码评审" and "QA" — with nothing
  * on the row to tell them apart. This chip is that missing signal, mirroring
  * web's `packages/views/issues/components/custom-status-chip.tsx`.
  *
  * It renders NOTHING for a status that already is its category's built-in: the
- * section header says "In Review" and a chip repeating it is pure noise. So a
+ * section header says "评审中" and a chip repeating it is pure noise. So a
  * workspace that never defined a custom status sees no visual change at all.
  *
  * Divergence from web: the catalog arrives as a PROP rather than from a hook

@@ -26,14 +26,14 @@ export function ChatSessionActions({
         <IconButton
           name="ellipsis-horizontal"
           onPress={onMorePress}
-          accessibilityLabel="Session actions"
+          accessibilityLabel="会话操作"
         />
       ) : null}
       <IconButton
         name="add"
         iconSize={24}
         onPress={onNewPress}
-        accessibilityLabel="New chat"
+        accessibilityLabel="新聊天"
       />
     </>
   );

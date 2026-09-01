@@ -46,7 +46,7 @@ export default function SelectWorkspace() {
                 {error instanceof Error ? error.message : "unknown error"}
               </Text>
               <Button variant="outline" onPress={() => refetch()}>
-                <Text>Retry</Text>
+                <Text>重试</Text>
               </Button>
             </View>
           ) : !data || data.length === 0 ? (
@@ -80,7 +80,7 @@ export default function SelectWorkspace() {
 
         <View className="pt-4 border-t border-border">
           <Button variant="outline" onPress={() => logout()}>
-            <Text>Sign out</Text>
+            <Text>退出登录</Text>
           </Button>
         </View>
       </ScrollView>

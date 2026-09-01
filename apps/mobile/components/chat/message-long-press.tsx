@@ -46,10 +46,10 @@ export function useChatMessageLongPress(
     };
 
     if (hasContent) {
-      push("Copy", { kind: "copy" });
-      push("Select Text", { kind: "select" });
+      push("复制", { kind: "copy" });
+      push("选择文本", { kind: "select" });
     }
-    push("Cancel", { kind: "cancel" });
+    push("取消", { kind: "cancel" });
 
     const cancelButtonIndex = options.length - 1;
 

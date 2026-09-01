@@ -13,7 +13,7 @@
  * inside a single ungrouped list.
  *
  * The `<CustomStatusChip>` is NOT gated on `showStatus`: a section header names
- * a category, so "Code Review" and "QA" both land under In Review and the row
+ * a category, so "代码评审" and "QA" both land under In Review and the row
  * is the only place left to tell them apart. It stays silent for built-in
  * statuses, so a workspace without custom statuses renders exactly as before.
  * (MUL-6243)

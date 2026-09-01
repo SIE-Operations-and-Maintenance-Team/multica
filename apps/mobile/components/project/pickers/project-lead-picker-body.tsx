@@ -148,7 +148,7 @@ export function ProjectLeadPickerBody({ value, query, onChange }: Props) {
           </Text>
           {/* Inline type tag — Apple UITableViewCellStyleValue1. */}
           {item.kind === "agent" ? (
-            <Text className="text-sm text-muted-foreground">Agent</Text>
+            <Text className="text-sm text-muted-foreground">智能体</Text>
           ) : null}
           {isRowSelected(value, item) ? (
             <Ionicons name="checkmark" size={20} color={checkColor} />
@@ -159,8 +159,8 @@ export function ProjectLeadPickerBody({ value, query, onChange }: Props) {
         <View className="px-3 py-8 items-center">
           <Text className="text-sm text-muted-foreground text-center">
             {query
-              ? "No matches."
-              : "No members or agents in this workspace yet."}
+              ? "无匹配结果。"
+              : "该工作区还没有成员或智能体。"}
           </Text>
         </View>
       }

@@ -21,7 +21,7 @@ export function SubmitIssueButton({ disabled, onPress, loading }: Props) {
     <Pressable
       onPress={interactive ? onPress : undefined}
       hitSlop={8}
-      accessibilityLabel="Create issue"
+      accessibilityLabel="创建事项"
       accessibilityState={{ disabled: !interactive, busy: loading }}
       className={cn(interactive && "active:opacity-60")}
     >

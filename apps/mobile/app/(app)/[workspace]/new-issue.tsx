@@ -78,8 +78,8 @@ export default function NewIssueModal() {
       router.back();
     } catch (err) {
       Alert.alert(
-        "Failed to create issue",
-        err instanceof Error ? err.message : "Unknown error",
+        "创建事项失败",
+        err instanceof Error ? err.message : "未知错误",
       );
     }
   }, [
@@ -119,7 +119,7 @@ export default function NewIssueModal() {
           <TextInput
             value={title}
             onChangeText={setTitle}
-            placeholder="Issue title"
+            placeholder="事项标题"
             placeholderTextColor={MOBILE_PLACEHOLDER_COLOR}
             className="text-2xl font-semibold text-foreground py-2"
             autoFocus

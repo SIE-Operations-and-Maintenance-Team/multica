@@ -8,7 +8,7 @@
  *     useActorLookup which reads the same MemberWithUser / Agent lists.
  *   - Agents get distinct visual treatment (brand-tinted background) to
  *     match web's "agents render with distinct styling" rule from the
- *     repo-root CLAUDE.md "Agent Assignees" section.
+ *     repo-root CLAUDE.md "智能体负责人" section.
  *
  * Presence dot: opt-in via `showPresence`. Mirrors web's `showStatusDot`
  * (`packages/views/common/actor-avatar.tsx:51`). The prop is opt-in (default

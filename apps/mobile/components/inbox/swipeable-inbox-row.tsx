@@ -99,12 +99,12 @@ function ArchiveAction({
     <Animated.View style={{ width: ACTION_WIDTH }}>
       <Pressable
         onPress={onPress}
-        accessibilityLabel="Archive"
+        accessibilityLabel="归档"
         className="flex-1 items-center justify-center bg-destructive"
       >
         <View className="items-center gap-0.5">
           <Ionicons name="archive-outline" size={20} color="white" />
-          <Text className="text-xs text-white">Archive</Text>
+          <Text className="text-xs text-white">归档</Text>
         </View>
       </Pressable>
     </Animated.View>

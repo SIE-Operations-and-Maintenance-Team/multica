@@ -38,8 +38,8 @@ export default function AddResourceRoute() {
         onSuccess: () => router.back(),
         onError: (err) => {
           Alert.alert(
-            "Failed to attach resource",
-            err instanceof Error ? err.message : "Unknown error",
+            "关联资源失败",
+            err instanceof Error ? err.message : "未知错误",
           );
         },
       },
@@ -67,7 +67,7 @@ export default function AddResourceRoute() {
       </View>
       <View className="px-4 pt-4 gap-4">
         <View className="gap-1">
-          <Text className="text-xs text-muted-foreground">Repository URL</Text>
+          <Text className="text-xs text-muted-foreground">仓库 URL</Text>
           <TextField
             value={url}
             onChangeText={setUrl}

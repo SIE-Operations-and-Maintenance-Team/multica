@@ -449,7 +449,7 @@ export default function SearchModal() {
           <TextInput
             value={query}
             onChangeText={handleChange}
-            placeholder="Search issues and projects"
+            placeholder="搜索事项和项目"
             placeholderTextColor="#a1a1aa"
             autoFocus
             autoCorrect={false}
