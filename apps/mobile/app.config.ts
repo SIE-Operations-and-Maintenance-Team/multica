@@ -95,6 +95,12 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           ios: {
             buildReactNativeFromSource: true,
           },
+          // The self-hosted backend is plain http (no TLS). Android
+          // blocks cleartext traffic by default in release builds —
+          // without this every request fails with a network error.
+          android: {
+            usesCleartextTraffic: true,
+          },
         },
       ],
     ],
