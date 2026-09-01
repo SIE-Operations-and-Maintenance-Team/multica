@@ -95,9 +95,9 @@ function AndroidActionSheetHost() {
       pointerEvents="box-none"
       style={{
         position: "absolute",
-        bottom: insets.bottom + 56,
-        left: "35%",
-        width: "30%",
+        bottom: insets.bottom,
+        left: 0,
+        right: 0,
         height: 1,
       }}
     >
@@ -124,7 +124,7 @@ function AndroidActionSheetHost() {
           side="top"
           align="center"
           sideOffset={8}
-          className="w-64 p-1"
+          className="w-72 p-1"
         >
           {current?.title ? (
             <DropdownMenuLabel>
