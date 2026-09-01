@@ -38,7 +38,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     splash: {
       image: "./assets/icon.png",
       resizeMode: "contain",
-      backgroundColor: "#0b0f19",
+      backgroundColor: "#ffffff",
     },
     ios: {
       // Expo keeps the top-level portrait policy for iPhone while adding all
