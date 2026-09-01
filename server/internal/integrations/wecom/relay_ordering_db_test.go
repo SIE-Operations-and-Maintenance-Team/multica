@@ -37,7 +37,15 @@ import (
 // wecomTestRedis is the same gate the rest of the repository uses for
 // Redis-backed tests: REDIS_TEST_URL, a dedicated DB index, flushed around
 // each test so one run cannot see another's claims.
-const wecomRelayTestRedisDB = 12
+//
+// The index has to be unique across PACKAGES, not just within this one. `go
+// test ./...` runs packages concurrently, every Redis-backed suite flushes its
+// own DB on entry and exit, and a flush is indiscriminate: sharing an index
+// means another package can delete a live delivery claim mid-test, and the
+// outcome watch then reports a reply that was delivered as lost. Current
+// allocation — 11 internal/auth, 12 internal/service, 13 internal/middleware,
+// 14 internal/handler, 15 here.
+const wecomRelayTestRedisDB = 15
 
 // testClaimBudget is the claim round trip these tests give the real store. It
 // sizes outcomeGrace (once per offer), so the production 2s would make the
