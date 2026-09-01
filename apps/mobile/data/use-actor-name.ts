@@ -25,13 +25,13 @@ export function useActorLookup() {
     if (!type || !id) return "System";
     if (type === "member") {
       const m = members.find((m) => m.user_id === id);
-      return m?.name ?? "Unknown";
+      return m?.name ?? "未知成员";
     }
     if (type === "agent") {
       const a = agents.find((a) => a.id === id);
-      return a?.name ?? "Unknown Agent";
+      return a?.name ?? "未知智能体";
     }
-    return squads.find((s) => s.id === id)?.name ?? "Squad";
+    return squads.find((s) => s.id === id)?.name ?? "小队";
   };
 
   const getAvatarUrl = (
