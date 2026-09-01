@@ -133,15 +133,15 @@ export default function NotificationsSettingsScreen() {
 
       <Section
         title="系统"
-        description="Multica-wide announcements and important account events."
+        description="Multica 官方公告与重要账户事件。"
       >
         <View className="flex-row items-center px-4 py-3 gap-3">
           <View className="flex-1">
             <Text className="text-base font-medium text-foreground">
-              System notifications
+              系统通知
             </Text>
             <Text className="text-xs text-muted-foreground mt-0.5">
-              Account changes, security alerts, product updates.
+              账户变更、安全提醒与产品更新。
             </Text>
           </View>
           <Switch
