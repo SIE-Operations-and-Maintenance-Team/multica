@@ -391,7 +391,7 @@ function AssistantRow({
       ) : null}
       {isNoResponse ? (
         <Text className="text-sm italic text-muted-foreground">
-          The agent finished this turn without a text reply.
+          智能体本轮没有返回文字回复。
         </Text>
       ) : (
         <Markdown

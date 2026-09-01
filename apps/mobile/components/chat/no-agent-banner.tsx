@@ -27,10 +27,10 @@ export function NoAgentBanner() {
       accessibilityLabel="暂无可用智能体，请打开智能体设置"
     >
       <Text className="text-sm font-medium text-foreground">
-        No agents available
+        暂无可用智能体
       </Text>
       <Text className="text-xs text-muted-foreground mt-0.5">
-        Add or enable an agent in More → Agents to start chatting.
+        在「更多 → 智能体」中添加或启用智能体后即可开始聊天。
       </Text>
     </Pressable>
   );

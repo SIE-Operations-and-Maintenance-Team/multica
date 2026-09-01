@@ -64,8 +64,8 @@ export default function ProjectsPage() {
       ) : error ? (
         <View className="px-4 gap-3 pt-4">
           <Text className="text-sm text-destructive">
-            Failed to load projects:{" "}
-            {error instanceof Error ? error.message : "unknown error"}
+            项目加载失败：{" "}
+            {error instanceof Error ? error.message : "未知错误"}
           </Text>
           <Button variant="outline" onPress={() => refetch()}>
             <Text>重试</Text>
@@ -112,11 +112,10 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
   return (
     <View className="flex-1 items-center justify-center px-6 gap-4">
       <Text className="text-base font-medium text-foreground">
-        No projects yet
+        暂无项目
       </Text>
       <Text className="text-sm text-muted-foreground text-center">
-        Group related issues into a project to track progress and assign a
-        lead.
+        把相关事项归入项目，便于跟踪进度和指定负责人。
       </Text>
       <Button variant="default" onPress={onCreate}>
         <Text>创建项目</Text>

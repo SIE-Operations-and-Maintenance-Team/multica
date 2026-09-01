@@ -146,8 +146,8 @@ export default function MyIssues() {
       ) : error ? (
         <View className="px-4 gap-3 pt-4">
           <Text className="text-sm text-destructive">
-            Failed to load issues:{" "}
-            {error instanceof Error ? error.message : "unknown error"}
+            事项加载失败：{" "}
+            {error instanceof Error ? error.message : "未知错误"}
           </Text>
           <Button variant="outline" onPress={() => refetch()}>
             <Text>重试</Text>

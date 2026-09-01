@@ -75,7 +75,7 @@ export function ProjectResourcesSection({ projectId, onAdd }: Props) {
       ) : !resources || resources.length === 0 ? (
         <View className="px-4 py-3">
           <Text className="text-sm text-muted-foreground/70">
-            No resources attached.
+            尚未关联资源.
           </Text>
         </View>
       ) : (

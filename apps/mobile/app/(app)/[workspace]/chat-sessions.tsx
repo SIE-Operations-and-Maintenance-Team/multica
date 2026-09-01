@@ -61,7 +61,7 @@ export default function ChatSessionsRoute() {
         {sessions.length === 0 ? (
           <View className="px-4 py-8">
             <Text className="text-sm text-muted-foreground text-center">
-              No chats yet.
+              暂无聊天.
             </Text>
           </View>
         ) : (

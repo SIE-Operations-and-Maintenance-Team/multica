@@ -79,7 +79,7 @@ export default function Verify() {
             <MulticaLogo size={32} />
             <View className="gap-1 items-center">
               <Text className="text-2xl font-semibold text-foreground">
-                Enter verification code
+                输入验证码
               </Text>
               <Text className="text-sm text-muted-foreground text-center">
                 验证码已发送至 {email}

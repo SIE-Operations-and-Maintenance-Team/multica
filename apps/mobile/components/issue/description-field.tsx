@@ -20,7 +20,7 @@ import type { UseMentionInputReturn } from "@/lib/use-mention-input";
 export function DescriptionField({
   description,
   disabled,
-  placeholder = "Description… (type @ to mention)",
+  placeholder = "描述…（输入 @ 可提及）",
 }: {
   description: UseMentionInputReturn;
   disabled: boolean;

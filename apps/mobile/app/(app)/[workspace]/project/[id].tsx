@@ -167,7 +167,7 @@ export default function ProjectDetail() {
       ) : detail.error || projectMissing ? (
         <View className="flex-1 items-center justify-center px-6 gap-3">
           <Text className="text-sm text-destructive text-center">
-            Failed to load project:{" "}
+            项目加载失败：{" "}
             {detail.error instanceof Error
               ? detail.error.message
               : "not found"}

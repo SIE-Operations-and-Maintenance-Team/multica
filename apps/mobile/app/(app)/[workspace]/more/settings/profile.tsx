@@ -184,7 +184,7 @@ export default function ProfileSettingsScreen() {
           <ActivityIndicator />
         ) : (
           <Text className="text-xs text-muted-foreground">
-            Tap to change photo
+            点按更换头像
           </Text>
         )}
       </View>
@@ -211,7 +211,7 @@ export default function ProfileSettingsScreen() {
             </Text>
           </View>
           <Text className="text-xs text-muted-foreground mt-1.5">
-            Email is set at sign-up and can&apos;t be changed here.
+            邮箱在注册后不可在此修改。
           </Text>
         </View>
       </View>

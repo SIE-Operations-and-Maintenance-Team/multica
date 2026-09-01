@@ -45,7 +45,7 @@ export function ProjectHeaderCard({ project, onEdit }: Props) {
           </Text>
         ) : onEdit ? (
           <Text className="text-sm text-muted-foreground/60 italic">
-            Add a description
+            添加描述
           </Text>
         ) : null}
         {project.issue_count > 0 ? (

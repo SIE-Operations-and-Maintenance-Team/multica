@@ -25,14 +25,14 @@ export default function SelectWorkspace() {
       <ScrollView contentContainerClassName="px-6 py-6 gap-6">
         <View className="gap-1">
           <Text className="text-xs uppercase tracking-wider text-muted-foreground">
-            Signed in as
+            登录身份
           </Text>
           <Text className="text-base text-foreground">{user?.email}</Text>
         </View>
 
         <View className="gap-3">
           <Text className="text-2xl font-semibold text-foreground">
-            Select a workspace
+            选择工作区
           </Text>
 
           {isLoading ? (
@@ -42,8 +42,8 @@ export default function SelectWorkspace() {
           ) : error ? (
             <View className="gap-3">
               <Text className="text-sm text-destructive">
-                Failed to load workspaces:{" "}
-                {error instanceof Error ? error.message : "unknown error"}
+                工作区加载失败：{" "}
+                {error instanceof Error ? error.message : "未知错误"}
               </Text>
               <Button variant="outline" onPress={() => refetch()}>
                 <Text>重试</Text>

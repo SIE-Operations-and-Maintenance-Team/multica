@@ -48,7 +48,7 @@ export function AgentPickerSheet({
             <View className="bg-popover rounded-2xl overflow-hidden">
               <View className="px-4 py-3 border-b border-border">
                 <Text className="text-base font-semibold text-foreground">
-                  Choose an agent
+                  选择智能体
                 </Text>
               </View>
 
@@ -56,7 +56,7 @@ export function AgentPickerSheet({
                 {agents.length === 0 ? (
                   <View className="px-4 py-8">
                     <Text className="text-sm text-muted-foreground text-center">
-                      No agents available.
+                      暂无可用智能体.
                     </Text>
                   </View>
                 ) : (

@@ -128,7 +128,7 @@ export default function SettingsPage() {
         ) : error ? (
           <View className="p-4">
             <Text className="text-sm text-destructive">
-              Failed to load workspaces
+              工作区加载失败
             </Text>
           </View>
         ) : (

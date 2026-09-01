@@ -181,7 +181,7 @@ export default function IssueDetail() {
       ) : detail.error || !issue ? (
         <View className="flex-1 items-center justify-center px-6 gap-3">
           <Text className="text-sm text-destructive text-center">
-            Failed to load issue:{" "}
+            事项加载失败：{" "}
             {detail.error instanceof Error
               ? detail.error.message
               : "not found"}
