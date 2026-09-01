@@ -29,6 +29,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Text } from "@/components/ui/text";
+import { cn } from "@/lib/utils";
 
 export interface ActionSheetConfig {
   options: string[];
@@ -113,34 +115,50 @@ function AndroidActionSheetHost() {
           />
         </DropdownMenuTrigger>
 
-        {current ? (
-          <DropdownMenuContent
-            side="top"
-            align="center"
-            sideOffset={8}
-            className="w-64 p-1"
-          >
-            {current.title ? (
-              <DropdownMenuLabel>{current.title}</DropdownMenuLabel>
-            ) : null}
-            {current.options.map((label, index) => (
-              <DropdownMenuItem
-                key={`${index}-${label}`}
-                variant={
+        {/* Always mounted — the primitive only portals it while open, and
+            having items ready before open() is what keeps the menu from
+            rendering as an empty white popover. Item text must live in
+            <Text>: bare string children of a View vanish in release
+            builds (that was the blank-white-menu bug). */}
+        <DropdownMenuContent
+          side="top"
+          align="center"
+          sideOffset={8}
+          className="w-64 p-1"
+        >
+          {current?.title ? (
+            <DropdownMenuLabel>
+              <Text className="text-xs font-medium text-muted-foreground">
+                {current.title}
+              </Text>
+            </DropdownMenuLabel>
+          ) : null}
+          {current?.options.map((label, index) => (
+            <DropdownMenuItem
+              key={`${index}-${label}`}
+              variant={
+                index === current.destructiveButtonIndex
+                  ? "destructive"
+                  : "default"
+              }
+              onPress={() => {
+                setCurrent(null);
+                current.onAction(index);
+              }}
+            >
+              <Text
+                className={cn(
+                  "text-sm",
                   index === current.destructiveButtonIndex
-                    ? "destructive"
-                    : "default"
-                }
-                onPress={() => {
-                  setCurrent(null);
-                  current.onAction(index);
-                }}
+                    ? "text-destructive"
+                    : "text-foreground",
+                )}
               >
                 {label}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        ) : null}
+              </Text>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
       </DropdownMenu>
     </View>
   );
