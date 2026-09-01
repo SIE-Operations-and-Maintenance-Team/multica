@@ -23,8 +23,9 @@
  * leaves the real tab button entirely alone.
  *
  * Visual conventions inside the popover (apps/mobile/CLAUDE.md):
- *   - All glyphs are SF Symbols rendered via expo-image (`sf:` source),
- *     so they share the visual language of the bottom tab bar icons.
+ *   - All glyphs are SF Symbol names rendered via `<Symbol>` (components/ui/
+ *     symbol.tsx): real SF Symbols on iOS, Ionicons fallback on Android —
+ *     bare expo-image `sf:` sources render nothing on Android.
  *   - All colours route through THEME tokens (foreground /
  *     mutedForeground / secondary), so dark mode is automatic.
  *   - Workspace is collapsed to a single `<WorkspaceCard>` row (icon +
@@ -36,7 +37,6 @@
  */
 import { useMemo } from "react";
 import { Image, Pressable, View } from "react-native";
-import { Image as ExpoImage } from "expo-image";
 import { router, usePathname } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -50,6 +50,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Text } from "@/components/ui/text";
+import { Symbol } from "@/components/ui/symbol";
 import { WorkspaceAvatar } from "@/components/workspace/workspace-avatar";
 import { workspaceListOptions } from "@/data/queries/workspaces";
 import { useAuthStore } from "@/data/auth-store";
@@ -158,10 +159,10 @@ export function MoreTabDropdownAnchor({
                 isActive(item.path) && "bg-secondary",
               )}
             >
-              <ExpoImage
-                source={`sf:${item.icon}`}
-                tintColor={t.foreground}
-                style={{ width: 18, height: 18 }}
+              <Symbol
+                name={item.icon}
+                color={t.foreground}
+                size={18}
               />
               <Text className="text-sm text-foreground">{item.label}</Text>
             </DropdownMenuItem>
@@ -222,11 +223,7 @@ function UserCard({
           </Text>
         ) : null}
       </View>
-      <ExpoImage
-        source="sf:chevron.right"
-        tintColor={chevronTint}
-        style={{ width: 12, height: 12 }}
-      />
+      <Symbol name="chevron.right" color={chevronTint} size={12} />
     </DropdownMenuItem>
   );
 }
@@ -283,11 +280,7 @@ function WorkspaceCard({
         </Text>
       </View>
       {canSwitch ? (
-        <ExpoImage
-          source="sf:chevron.right"
-          tintColor={chevronTint}
-          style={{ width: 12, height: 12 }}
-        />
+        <Symbol name="chevron.right" color={chevronTint} size={12} />
       ) : null}
     </DropdownMenuItem>
   );

@@ -22,7 +22,6 @@
  */
 import { useRef } from "react";
 import { Tabs } from "expo-router";
-import { Image } from "expo-image";
 import { View } from "react-native";
 import type { TriggerRef } from "@rn-primitives/dropdown-menu";
 import { useWorkspaceStore } from "@/data/workspace-store";
@@ -33,6 +32,7 @@ import {
   useChatUnreadMessageCount,
 } from "@/lib/unread-counts";
 import { MoreTabDropdownAnchor } from "@/components/nav/more-tab-dropdown";
+import { Symbol } from "@/components/ui/symbol";
 
 // Only override backgroundColor — @react-navigation/elements Badge internally
 // sets borderRadius = size/2, height = size, minWidth = size, so a single
@@ -81,10 +81,10 @@ export default function TabsLayout() {
             tabBarBadge: inboxBadge,
             tabBarBadgeStyle: BADGE_STYLE,
             tabBarIcon: ({ color, size, focused }) => (
-              <Image
-                source={focused ? "sf:tray.fill" : "sf:tray"}
-                tintColor={color}
-                style={{ width: size, height: size }}
+              <Symbol
+                name={focused ? "tray.fill" : "tray"}
+                color={color}
+                size={size}
               />
             ),
           }}
@@ -94,10 +94,10 @@ export default function TabsLayout() {
           options={{
             title: "My Issues",
             tabBarIcon: ({ color, size, focused }) => (
-              <Image
-                source={focused ? "sf:checklist" : "sf:checklist.unchecked"}
-                tintColor={color}
-                style={{ width: size, height: size }}
+              <Symbol
+                name={focused ? "checklist" : "checklist.unchecked"}
+                color={color}
+                size={size}
               />
             ),
           }}
@@ -109,10 +109,10 @@ export default function TabsLayout() {
             tabBarBadge: chatBadge,
             tabBarBadgeStyle: BADGE_STYLE,
             tabBarIcon: ({ color, size, focused }) => (
-              <Image
-                source={focused ? "sf:bubble.left.fill" : "sf:bubble.left"}
-                tintColor={color}
-                style={{ width: size, height: size }}
+              <Symbol
+                name={focused ? "bubble.left.fill" : "bubble.left"}
+                color={color}
+                size={size}
               />
             ),
           }}
@@ -122,11 +122,7 @@ export default function TabsLayout() {
           options={{
             title: "More",
             tabBarIcon: ({ color, size }) => (
-              <Image
-                source="sf:ellipsis"
-                tintColor={color}
-                style={{ width: size, height: size }}
-              />
+              <Symbol name="ellipsis" color={color} size={size} />
             ),
           }}
           listeners={() => ({
