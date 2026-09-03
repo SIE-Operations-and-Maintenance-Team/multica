@@ -29,6 +29,7 @@ import {
   dropInboxItemsByIssue,
   patchInboxIssueStatus,
 } from "./inbox-ws-updaters";
+import { handleInboxNewNotification } from "./inbox-notification-sync";
 
 export function useInboxRealtime() {
   const qc = useQueryClient();
@@ -39,8 +40,13 @@ export function useInboxRealtime() {
         qc.invalidateQueries({ queryKey: inboxKeys.list(wsId) });
 
       return [
-        // Inbox-domain events: refetch the small inbox list.
-        ws.on("inbox:new", invalidate),
+        // Inbox-domain events: refetch the small inbox list. `inbox:new`
+        // additionally surfaces a system notification (foreground-muted,
+        // source-workspace gated — inbox-notification-sync.ts).
+        ws.on("inbox:new", (payload) => {
+          invalidate();
+          void handleInboxNewNotification(qc, payload.item);
+        }),
         ws.on("inbox:read", invalidate),
         // Mobile has no mark-unread affordance yet (web/desktop right-click
         // only), but a mark-unread there must un-read the row here too —

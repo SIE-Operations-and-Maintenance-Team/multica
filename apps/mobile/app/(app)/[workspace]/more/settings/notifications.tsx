@@ -7,6 +7,7 @@
  * stay in sync with web — they describe the same server-side semantics,
  * and divergent labels would violate behavioral parity (apps/mobile/CLAUDE.md).
  */
+import { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, View } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import type {
@@ -14,11 +15,18 @@ import type {
   NotificationPreferences,
 } from "@multica/core/types";
 import { Text } from "@/components/ui/text";
+import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { useWorkspaceStore } from "@/data/workspace-store";
 import { notificationPreferenceOptions } from "@/data/queries/notification-preferences";
 import { useUpdateNotificationPreferences } from "@/data/mutations/notification-preferences";
+import {
+  getNotificationPermission,
+  openSystemNotificationSettings,
+  requestNotificationPermission,
+  type SystemNotificationPermission,
+} from "@/lib/system-notification";
 
 const INBOX_GROUPS: Array<{
   key: Exclude<NotificationGroupKey, "system_notifications">;
@@ -64,6 +72,18 @@ export default function NotificationsSettingsScreen() {
   );
   const mutation = useUpdateNotificationPreferences();
 
+  // 系统通知权限（Android 13+ 的 POST_NOTIFICATIONS 是运行时权限）：
+  // 未授予时本页的偏好开关只是存到服务端，系统横幅一条也出不来，所以
+  // 把权限申请入口放在本页最顶部。
+  const [permission, setPermission] =
+    useState<SystemNotificationPermission>("default");
+  useEffect(() => {
+    void getNotificationPermission().then(setPermission);
+  }, []);
+  const handleRequestPermission = async () => {
+    setPermission(await requestNotificationPermission());
+  };
+
   const preferences: NotificationPreferences = data?.preferences ?? {};
 
   const onToggle = (key: NotificationGroupKey, enabled: boolean) => {
@@ -102,6 +122,44 @@ export default function NotificationsSettingsScreen() {
       className="flex-1 bg-background"
       contentContainerClassName="px-4 py-4 gap-6"
     >
+      <Section
+        title="系统通知权限"
+        description={
+          permission === "granted"
+            ? "系统通知已开启，收件箱事件将出现在系统通知栏。"
+            : permission === "denied"
+              ? "通知权限已被拒绝，请在系统设置中手动开启。"
+              : "开启系统通知权限后，收件箱事件才能在应用外提醒。"
+        }
+      >
+        <View className="flex-row items-center justify-between px-4 py-3 gap-3">
+          <Text className="text-base font-medium text-foreground">
+            允许 Multica 发送通知
+          </Text>
+          {permission === "granted" ? (
+            <Text className="text-caption font-medium text-muted-foreground">
+              已开启
+            </Text>
+          ) : permission === "denied" ? (
+            <Button
+              size="sm"
+              variant="outline"
+              onPress={() => void openSystemNotificationSettings()}
+            >
+              前往系统设置
+            </Button>
+          ) : permission === "default" ? (
+            <Button
+              size="sm"
+              variant="outline"
+              onPress={() => void handleRequestPermission()}
+            >
+              开启通知权限
+            </Button>
+          ) : null}
+        </View>
+      </Section>
+
       <Section
         title="收件箱通知"
         description="哪些事件会出现在你的收件箱。"

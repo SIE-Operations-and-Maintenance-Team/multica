@@ -10,6 +10,11 @@ import { QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import { ThemeProvider } from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
 import { ActionSheetHost } from "@/components/ui/action-sheet";
+import {
+  ensureNotificationPermissionRequested,
+  registerInboxNotificationClickHandler,
+  setupInboxNotificationRouting,
+} from "@/lib/system-notification";
 import { api } from "@/data/api";
 import { queryClient } from "@/data/query-client";
 import { useAuthStore } from "@/data/auth-store";
@@ -60,6 +65,22 @@ function AuthInitializer({ children }: { children: React.ReactNode }) {
 
 export default function RootLayout() {
   const { colorScheme, isDarkColorScheme } = useColorScheme();
+
+  // 系统通知点击 → 来源工作区的收件箱（lib/system-notification.ts）。
+  // slug 无法解析时 handler 收到空 slug，是 no-op 而非错误路由。
+  useEffect(() => {
+    registerInboxNotificationClickHandler((payload) => {
+      router.push(`/${payload.slug}/inbox`);
+    });
+    return setupInboxNotificationRouting();
+  }, []);
+
+  // 启动即申请系统通知权限（还没问过才弹系统授权框）——不要求用户
+  // 先找到 设置→通知 里的手动入口。已被拒/已授予时静默跳过。
+  useEffect(() => {
+    void ensureNotificationPermissionRequested();
+  }, []);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>

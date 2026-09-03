@@ -22,7 +22,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         ? "SMOM Multica (Staging)"
         : "SMOM Multica (Dev)",
     slug: "multica-mobile",
-    version: "1.0.0",
+    version: "1.0.1",
     orientation: "portrait",
     userInterfaceStyle: "automatic",
     scheme: "multica",
@@ -84,6 +84,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     plugins: [
       "expo-router",
       "expo-secure-store",
+      "expo-notifications",
       "@react-native-community/datetimepicker",
       "react-native-enriched-markdown",
       [
