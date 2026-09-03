@@ -212,7 +212,7 @@ Installing and authenticating them: [Install an agent runtime](https://multica.a
 | --- | --- |
 | Web | Next.js 16 (App Router) |
 | Desktop | Electron, sharing the web UI packages |
-| Mobile | Expo / React Native (iOS) |
+| Mobile | Expo / React Native (iOS / Android) |
 | Backend | Go (Chi router, sqlc, gorilla/websocket) |
 | Database | PostgreSQL 17 (`pgcrypto` + `pg_trgm`) |
 | Agent runtime | Local daemon executing any of the 26 agent CLIs above |
@@ -233,8 +233,11 @@ make dev
 installs dependencies, sets up the database, runs migrations, and starts every service.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow, worktree support, testing, and
-troubleshooting. The iOS client lives in [`apps/mobile/`](apps/mobile/) — its
-[README](apps/mobile/README.md) covers building it onto your own iPhone.
+troubleshooting. The mobile client lives in [`apps/mobile/`](apps/mobile/) — its
+[README](apps/mobile/README.md) covers building it onto your own iPhone (iOS) and the
+Android APK build & release flow. ⚠️ **Android builds require the hoisted node_modules
+layout** (`nodeLinker: hoisted` in `pnpm-workspace.yaml`) — see the warning at the top of
+the mobile README before touching dependencies.
 
 We release most weekdays, so `main` moves quickly — pull often.
 

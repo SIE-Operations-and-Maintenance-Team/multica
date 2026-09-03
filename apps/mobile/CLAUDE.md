@@ -173,6 +173,17 @@ Two things the wrapper depends on:
 
 The wrapper is invoked under the caller's `dotenv`/`cross-env`, so prebuild and run resolve the same `APP_ENV` and bundle identifier. A bare `expo prebuild` inside a prod/staging script would rewrite the project to the dev variant.
 
+### ⚠️ Android builds require the hoisted node_modules layout (incident 2026-09-02)
+
+Android 本地打包（`apps/mobile/android` 下 gradlew / Android Studio）要求 `node_modules` 为 **hoisted 扁平布局**——已固定写在 `pnpm-workspace.yaml`（`nodeLinker: hoisted`）。**pnpm v10 不再读 `.npmrc` 里的 `node-linker`**；若该行被删、或在不支持的环境重装依赖，Android 构建会**静默坏掉**：
+
+- release APK **颜色样式全部失效**（布局类样式仍生效——内容居中但无色）；根因是 Metro 把依赖解析到 `.pnpm` 物理路径，`react-native-css-interop` 双实例，运行时查不到样式表
+- debug 壳 `ClassNotFoundException: expo.modules.splashscreen.SplashScreenManager`（autolinking 丢失原生模块）
+
+30 秒自查与完整修复步骤见 [`README.md` → "ANDROID BUILD & RELEASE"](./README.md) 与 [`doc/bug-diagnosis-mobile-styles-lost-pnpm-node-linker-20260903.md`](../../doc/bug-diagnosis-mobile-styles-lost-pnpm-node-linker-20260903.md)。快速判据：解包 APK 后 `grep -c ".pnpm" assets/index.android.bundle` 必须为 **0**。
+
+注意 Gradle **不跟踪 node_modules 变化**：改依赖或 env 后需 `./gradlew.bat :app:createBundleReleaseJsAndAssets --rerun` 强制重打 JS bundle；`android/build/generated/autolinking` 缓存指向失效路径时需删除重建。
+
 ## Realtime / WebSocket strategy
 
 Mobile uses the same WS server protocol as web/desktop, but mounts subscriptions differently. The rules below exist because mobile-specific constraints (cellular data cost, AppState lifecycle, per-screen unmount cleanup, smaller cache surface) make a direct port of web's pattern wrong.

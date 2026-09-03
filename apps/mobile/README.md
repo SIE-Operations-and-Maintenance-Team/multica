@@ -1,6 +1,6 @@
-# Multica Mobile (iOS)
+# Multica Mobile (iOS / Android)
 
-Expo + React Native iOS client for Multica. Independent from web/desktop — shares only types from `@multica/core/`. See [`CLAUDE.md`](./CLAUDE.md) for the locked tech-stack baseline and import rules.
+Expo + React Native iOS & Android client for Multica. Independent from web/desktop — shares only types from `@multica/core/`. See [`CLAUDE.md`](./CLAUDE.md) for the locked tech-stack baseline and import rules.
 
 ## Just want to use it on your phone? (no development)
 
@@ -53,6 +53,80 @@ Everything below is for app developers — you can ignore the rest if you only w
 `dev:*` runs Metro only — assumes the matching variant is already installed. `ios:mobile*` does a full native rebuild + install.
 
 Bundle id and display name switch on `APP_ENV` (see `app.config.ts`), so Dev / Staging / Production variants can coexist on the same device or simulator.
+
+---
+
+## ⚠️ ANDROID BUILD & RELEASE — READ THIS FIRST
+
+> [!WARNING]
+> **Installing dependencies with a plain `pnpm install` used to silently break every Android build**
+> (颜色样式全部丢失 / `ClassNotFoundException: expo.modules.splashscreen.SplashScreenManager` / JS 模块解析到 `.pnpm` 物理路径).
+> **Root cause**: Android 构建要求 `node_modules` 为 **hoisted 扁平布局**；pnpm v10 不再读 `.npmrc` 里的 `node-linker` 配置，
+> 现已固定写在 [`pnpm-workspace.yaml`](../../pnpm-workspace.yaml) 顶部（`nodeLinker: hoisted`）。**不要删除这一行**。
+> 完整事故复盘见 [`doc/bug-diagnosis-mobile-styles-lost-pnpm-node-linker-20260903.md`](../../doc/bug-diagnosis-mobile-styles-lost-pnpm-node-linker-20260903.md)。
+
+## 30-second health check (run this if ANY Android build looks wrong)
+
+```bash
+# 1. Layout must be hoisted (flat): `.pnpm` must NOT exist as a virtual store
+ls node_modules/.pnpm 2>/dev/null && echo "BROKEN: run 'rm -rf node_modules && pnpm install'" || echo "OK"
+
+# 2. The built JS bundle must not reference .pnpm paths (0 = healthy)
+unzip -p apps/mobile/android/app/build/outputs/apk/release/app-release.apk assets/index.android.bundle | grep -ac ".pnpm"
+```
+
+Symptom → meaning: `.pnpm` count > 0 ⇒ Metro resolved deps into the physical store ⇒ `react-native-css-interop` gets bundled as two instances ⇒ **all color styles silently vanish** (layout classes still work — content stays centered, just colorless) and autolinking loses native modules (`ClassNotFoundException`). Fix = step 1 above + clear the stale autolinking cache (`rm -rf apps/mobile/android/build/generated/autolinking`) + force-rerun the bundle task (see below).
+
+## Build a release APK (Android)
+
+Prereq: deps installed in **hoisted** layout (see warning above), Android SDK installed (`android/local.properties` → `sdk.dir`).
+
+```bash
+cd apps/mobile/android
+./gradlew.bat assembleRelease        # Windows (Git Bash: ./gradlew.bat works)
+# or: ./gradlew assembleRelease      # macOS / Linux
+```
+
+Output APK: `apps/mobile/android/app/build/outputs/apk/release/app-release.apk` (signed with the debug keystore — fine for internal distribution).
+
+Backend URL is baked in at build time: hoisted installs read `.env.production.local` (self-hosted fork default, gitignored). Verify after building:
+
+```bash
+unzip -p apps/mobile/android/app/build/outputs/apk/release/app-release.apk assets/index.android.bundle | grep -ac "218.13.91.107"   # >0 = self-hosted URL inlined
+```
+
+## Force-rebuild the embedded JS bundle
+
+Gradle does **not** track `node_modules` as an input — after changing dependencies or env files the bundle task may be skipped (`up-to-date`) even though the output would differ. Force it:
+
+```bash
+cd apps/mobile/android
+./gradlew.bat :app:createBundleReleaseJsAndAssets --rerun   # re-bundle JS only (~40s)
+./gradlew.bat :app:assembleRelease                          # then repackage
+```
+
+Also clear the autolinking cache if native modules moved: `rm -rf apps/mobile/android/build/generated/autolinking`.
+
+## Android day-to-day development
+
+```bash
+cd apps/mobile/android && ./gradlew.bat assembleDebug   # build the dev-client shell (no JS inside)
+pnpm dev:mobile                                          # start Metro (terminal 1) — or pnpm dev:selfhost for the self-hosted backend
+# launch the app on the device/emulator; the dev-launcher connects to Metro and pulls fresh JS
+```
+
+Android Studio works too: open `apps/mobile/android` and press Run (Debug = dev-client shell + Metro; Release = standalone APK with embedded JS). Known quirk: cold-starting the dev-client may ANR once on a busy emulator — relaunch.
+
+## Release checklist (Android)
+
+1. `ls node_modules/.pnpm` → must not exist (hoisted layout intact)
+2. Build: `./gradlew.bat assembleRelease`
+3. `unzip -p <apk> assets/index.android.bundle | grep -ac ".pnpm"` → must print **0**
+4. `grep -ac "<your-backend-host>"` → >0 (correct backend inlined)
+5. Install on a real device → login page content **vertically centered**, button has a dark filled background
+   (quick tell: screenshot PNG ≥ ~90 KB = styled; ~32 KB = colorless/unstyled)
+
+---
 
 ## First-time setup
 
