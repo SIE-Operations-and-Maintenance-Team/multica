@@ -10,7 +10,7 @@
  * Stack.Screen with title "Issue". We override that here once the data
  * lands so the navigation bar shows `MUL-123` (Linear-style).
  */
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -44,6 +44,7 @@ import { useCommentSelectStore } from "@/data/comment-select-store";
 import { useReplyTargetStore } from "@/data/stores/reply-target-store";
 
 export default function IssueDetail() {
+  const menuAnchorRef = useRef<View>(null);
   // `highlight` + `h` come from inbox deep-link (apps/mobile/app/(app)/
   // [workspace]/(tabs)/inbox.tsx). `highlight` is the target comment id;
   // `h` is a per-tap nonce so re-tapping the same row re-fires the
@@ -128,6 +129,7 @@ export default function IssueDetail() {
       cancelButtonIndex: 0,
       destructiveButtonIndex: destructiveIndex,
       title: issue.identifier,
+      anchor: menuAnchorRef,
       onAction: (i) => {
         const label = options[i];
         if (label === "置顶") {
@@ -164,11 +166,13 @@ export default function IssueDetail() {
                    *  active tasks, so it doesn't crowd the header in the
                    *  common case. See agent-header-badge.tsx. */}
                   <AgentHeaderBadge issueId={id} />
-                  <IconButton
-                    name="ellipsis-horizontal"
-                    onPress={onPressMore}
-                    accessibilityLabel="事项操作"
-                  />
+                  <View ref={menuAnchorRef} collapsable={false}>
+                    <IconButton
+                      name="ellipsis-horizontal"
+                      onPress={onPressMore}
+                      accessibilityLabel="事项操作"
+                    />
+                  </View>
                 </View>
               )
             : undefined,

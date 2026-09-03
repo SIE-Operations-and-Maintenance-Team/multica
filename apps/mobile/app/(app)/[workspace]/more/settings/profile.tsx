@@ -10,7 +10,7 @@
  * store via setUser — same source-of-truth pattern as web (server response
  * is authoritative, never the local form state).
  */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Alert,
   ActivityIndicator,
@@ -43,6 +43,7 @@ function initialsOf(name: string | undefined): string {
 }
 
 export default function ProfileSettingsScreen() {
+  const avatarAnchorRef = useRef<View>(null);
   const user = useAuthStore((s) => s.user);
   const setUser = useAuthStore((s) => s.setUser);
 
@@ -62,10 +63,13 @@ export default function ProfileSettingsScreen() {
     const options = ["拍照", "从相册选择", "移除头像", "取消"];
     const removeIndex = user?.avatar_url ? 2 : -1;
     const cancelIndex = user?.avatar_url ? 3 : 2;
-    const visibleOptions = user?.avatar_url ? options : options.filter((_, i) => i !== 2);
+    const visibleOptions = user?.avatar_url
+      ? options
+      : options.filter((_, i) => i !== 2);
 
     showActionSheet({
       options: visibleOptions,
+      anchor: avatarAnchorRef,
       cancelButtonIndex: cancelIndex,
       destructiveButtonIndex: removeIndex >= 0 ? removeIndex : undefined,
       onAction: async (index) => {
@@ -168,24 +172,24 @@ export default function ProfileSettingsScreen() {
       keyboardShouldPersistTaps="handled"
     >
       <View className="items-center gap-3">
-        <Pressable onPress={handleAvatarPick} disabled={uploading}>
-          <Avatar alt={user?.name ?? "你的头像"} className="size-24">
-            {user?.avatar_url ? (
-              <AvatarImage source={{ uri: user.avatar_url }} />
-            ) : null}
-            <AvatarFallback>
-              <Text className="text-2xl font-semibold text-muted-foreground">
-                {initialsOf(user?.name)}
-              </Text>
-            </AvatarFallback>
-          </Avatar>
-        </Pressable>
+        <View ref={avatarAnchorRef} collapsable={false}>
+          <Pressable onPress={handleAvatarPick} disabled={uploading}>
+            <Avatar alt={user?.name ?? "你的头像"} className="size-24">
+              {user?.avatar_url ? (
+                <AvatarImage source={{ uri: user.avatar_url }} />
+              ) : null}
+              <AvatarFallback>
+                <Text className="text-2xl font-semibold text-muted-foreground">
+                  {initialsOf(user?.name)}
+                </Text>
+              </AvatarFallback>
+            </Avatar>
+          </Pressable>
+        </View>
         {uploading ? (
           <ActivityIndicator />
         ) : (
-          <Text className="text-xs text-muted-foreground">
-            点按更换头像
-          </Text>
+          <Text className="text-xs text-muted-foreground">点按更换头像</Text>
         )}
       </View>
 

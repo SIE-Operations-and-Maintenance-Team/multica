@@ -13,7 +13,7 @@
  * confirmation via `Alert.alert` per iOS HIG (destructive actions need
  * a second tap).
  */
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -46,6 +46,7 @@ import { useProjectRealtime } from "@/data/realtime/use-project-realtime";
 import { useWorkspaceStore } from "@/data/workspace-store";
 
 export default function ProjectDetail() {
+  const menuAnchorRef = useRef<View>(null);
   const { id } = useLocalSearchParams<{ id: string }>();
   const wsId = useWorkspaceStore((s) => s.currentWorkspaceId);
   const wsSlug = useWorkspaceStore((s) => s.currentWorkspaceSlug);
@@ -61,7 +62,9 @@ export default function ProjectDetail() {
   const onRefresh = useCallback(async () => {
     await Promise.all([
       detail.refetch(),
-      qc.invalidateQueries({ queryKey: projectResourcesOptions(wsId, id).queryKey }),
+      qc.invalidateQueries({
+        queryKey: projectResourcesOptions(wsId, id).queryKey,
+      }),
       qc.invalidateQueries({
         queryKey: [...issueKeys.list(wsId), "byProject", id],
       }),
@@ -78,9 +81,7 @@ export default function ProjectDetail() {
   const { data: pins } = useQuery(pinListOptions(wsId, userId));
   const isPinned =
     !!project &&
-    !!pins?.some(
-      (p) => p.item_type === "project" && p.item_id === project.id,
-    );
+    !!pins?.some((p) => p.item_type === "project" && p.item_id === project.id);
   const createPin = useCreatePin();
   const deletePin = useDeletePin();
 
@@ -99,6 +100,7 @@ export default function ProjectDetail() {
       options,
       cancelButtonIndex: 0,
       destructiveButtonIndex: destructiveIndex,
+      anchor: menuAnchorRef,
       onAction: (i) => {
         const label = options[i];
         if (label === "置顶") {
@@ -151,11 +153,13 @@ export default function ProjectDetail() {
           headerBackTitle: "返回",
           headerRight: project
             ? () => (
-                <IconButton
-                  name="ellipsis-horizontal"
-                  onPress={onPressMore}
-                  accessibilityLabel="项目操作"
-                />
+                <View ref={menuAnchorRef} collapsable={false}>
+                  <IconButton
+                    name="ellipsis-horizontal"
+                    onPress={onPressMore}
+                    accessibilityLabel="项目操作"
+                  />
+                </View>
               )
             : undefined,
         }}
@@ -168,9 +172,7 @@ export default function ProjectDetail() {
         <View className="flex-1 items-center justify-center px-6 gap-3">
           <Text className="text-sm text-destructive text-center">
             项目加载失败：{" "}
-            {detail.error instanceof Error
-              ? detail.error.message
-              : "not found"}
+            {detail.error instanceof Error ? detail.error.message : "not found"}
           </Text>
           <Button variant="outline" onPress={() => detail.refetch()}>
             <Text>重试</Text>

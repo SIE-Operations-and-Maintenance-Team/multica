@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import {
   Alert,
   FlatList,
@@ -31,6 +31,7 @@ import { THEME } from "@/lib/theme";
 import { deduplicateInboxItems } from "@/lib/inbox-display";
 
 export default function Inbox() {
+  const menuAnchorRef = useRef<View>(null);
   const wsId = useWorkspaceStore((s) => s.currentWorkspaceId);
   const wsSlug = useWorkspaceStore((s) => s.currentWorkspaceSlug);
   const { colorScheme } = useColorScheme();
@@ -88,6 +89,7 @@ export default function Inbox() {
       cancelButtonIndex: 0,
       destructiveButtonIndex: 4,
       title: "收件箱",
+      anchor: menuAnchorRef,
       onAction: (i) => {
         if (i === 1) markAllRead.mutate();
         else if (i === 2) archiveAllRead.mutate();
@@ -116,11 +118,13 @@ export default function Inbox() {
         title="收件箱"
         right={
           <>
-            <IconButton
-              name="ellipsis-horizontal"
-              onPress={onPressMenu}
-              accessibilityLabel="收件箱操作"
-            />
+            <View ref={menuAnchorRef} collapsable={false}>
+              <IconButton
+                name="ellipsis-horizontal"
+                onPress={onPressMenu}
+                accessibilityLabel="收件箱操作"
+              />
+            </View>
             <HeaderActions />
           </>
         }
