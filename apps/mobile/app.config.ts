@@ -22,7 +22,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         ? "SMOM Multica (Staging)"
         : "SMOM Multica (Dev)",
     slug: "multica-mobile",
-    version: "1.0.1",
+    version: "1.0.2",
     orientation: "portrait",
     userInterfaceStyle: "automatic",
     scheme: "multica",
@@ -74,6 +74,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       // Mirrors the iOS per-variant bundle id logic so Dev / Staging /
       // Production Android variants can coexist on one device. The same
       // EXPO_BUNDLE_IDENTIFIER_* overrides apply.
+      // versionCode must be set explicitly: prebuild's default (1) would
+      // break install-over-upgrade against already-shipped APKs.
+      versionCode: 3,
       package: isProd
         ? (process.env.EXPO_BUNDLE_IDENTIFIER_PROD ?? "ai.multica.mobile")
         : isStaging
