@@ -28,6 +28,7 @@ const LABELS: Record<string, string> = {
   api_invalid_request: "被模型 API 拒绝",
   skill_bundle_unavailable: "智能体技能下载失败",
   runtime_cli_timeout: "本地运行时 CLI 超时",
+  environment_prepare_failed: "无法准备执行环境",
 
   // Agent process side — provider.
   "agent_error.provider_auth_or_access": "模型服务商认证失败",
